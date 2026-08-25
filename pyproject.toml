@@ -1,32 +1,37 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
 
 [project]
-name = "ytmgrab"
-version = "1.2.1"
-description = "Download and search YouTube Music audio"
+name = "smytm"
+version = "1.0.b1"
+description = "CLI utility for searching and downloading musics / audios from YouTube (Music)."
 readme = "README.md"
-authors = [
-    {name = "SmileLulz"},
-]
-license = {text = "MIT"}
-requires-python = ">=3.11"
+requires-python = ">=3.10"
+authors = [{ name = "SmileLulz" }]
+license = { text = "GPL-3.0-only" }
 dependencies = [
-    # Intentionally empty: yt-dlp, ffmpeg, curl, chafa, ytmusicapi, mutagen,
-    # and (optionally) rsgain are all required/optional at runtime, not at install time.
-    # They are checked on demand by
-    # utils.check_dependencies() / search.check_search_dependencies(),
-    # and declared as package dependencies in PKGBUILD instead.
-    # This keeps a plain `pip install ytmgrab` lightweight for users who bring their own system tools.
+    # Intentionally empty, all dependencies are checked during runtime
 ]
 
 [project.urls]
-Repository = "https://codeberg.org/SmileLulz404/ytmgrab"
+Repository = "https://github.com/SmileLulz/smytm"
 
 [project.scripts]
-ytmgrab = "ytmgrab.cli:main"
+smilemplayer = "smytm.cli:main"
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["ytmgrab*"]
+[tool.hatch.build.targets.wheel]
+packages = ["smytm"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/smytm",
+    "/README.md",
+    "/LICENSE",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

@@ -1,9 +1,9 @@
-"""Configuration handling for ytmgrab."""
+"""Configuration handling for smytm."""
 
 import json
 from pathlib import Path
 
-CONFIG_DIR = Path.home() / ".config" / "ytmgrab"
+CONFIG_DIR = Path.home() / ".config" / "smytm"
 CONFIG_FILE = CONFIG_DIR / "config.json"
 
 DEFAULT_CONFIG = {

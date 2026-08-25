@@ -1,103 +1,113 @@
-# ❤️ ytmgrab
+<div align="center">
+  <h1>🎵 smytm 🎵</h1>
+  <h3>
+    CLI utility for searching and downloading musics / audios from YouTube (Music).
+    <br/>For non-audiophiles.<br>
+  </h3>
+</div>
 
-Search or download audios from YouTube / YouTube Music
+<br></br>
+
+> [!WARNING]
+> This project was meant to be a personal project, but thought it would be nice to share it with others.
+> 
+> By the way, I am not accepting contributions. Thank you. Hope you like this utility :)
+
+> [!WARNING]
+> It's still in beta, some things and features may not avilable currently.
 
 
-> This project was meant to be a personal project, but I'm sharing anyways. Therefore, I am not accepting any contributions. Thank you.
-
-
-## Features
+# ✨ Features
 
 - Search for songs in YouTube Music
-- Download songs or any audios or playlists from YouTube Music or YouTube (as fallback)
-- Customize your experience with config file or directly through the cli
+- Download songs / playlists / any audios from YouTube Music or YouTube
+- See [WIKI.md](https://github.com/SmileLulz/smytm/blob/main/WIKI.md) for more help.
 
 
-## Requirements
+# 🔗 Dependencies
 
-- [Python](https://github.com/python/cpython) >= 3.11
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) and [ffmpeg](https://ffmpeg.org/) (required)
-- [ytmusicapi](https://github.com/sigma67/ytmusicapi) and [mutagen](https://github.com/quodlibet/mutagen) (Python packages, required)
-- [curl](https://github.com/curl/curl) and [chafa](https://github.com/hpjansson/chafa) (required for searching for thumbnail previews)
-- [AtomicParsley](https://github.com/wez/atomicparsley) (optional, but M4A thumbnail embedding may fail without it)
-- [rsgain](https://github.com/complexlogic/rsgain) (optional, for ReplayGain 2.0 tagging)
+- `python` (>= 3.10) (`python3`)
+- `yt-dlp`
+- `ffmpeg`
+- `ytmusicapi`
+- `mutagen`
+- `curl`
+- `chafa`
+- `rsgain` (optional - ReplayGain 2.0 tagging)
+- `atomicparsley` (optional - M4A thumbnail embedding)
 
-In `pip` build, these are all checked at runtime rather than installed automatically.
-For Arch Linux, `PKGBUILD` declares them all as package dependencies.
+> [!WARNING]
+> Installing with `pip` DOESN'T install the dependencies automatically, they are all checked at runtime. So install them manually.
+>
+> This applies only on installation via python `pip`.
 
 
-## Install
+# 📥 Install
 
-Via the `PKGBUILD` (Arch Linux):
+Guide will be added soon...
+
+
+# 📦 Build by yourself
+
+> Replace any `x.x` with the actual version tag.
+
+### Clone the repository
 
 ```sh
-makepkg -csfCi
+git clone https://github.com/SmileLulz/smytm.git && cd smytm
 ```
 
-Or with pip, bringing your own system tools:
+### Running directly
 
 ```sh
-pip install .
+python -m smytm
 ```
 
-
-## Usage
+### Build for python pip
 
 ```sh
-# Download a track by YouTube video ID
-ytmgrab download 8BiLurrzFRw
+# Build the package
+python -m build
 
-# Override the output format, and tag with ReplayGain
-ytmgrab download 8BiLurrzFRw --format m4a --replaygain
+# Install locally
+python -m pip install .
 
-# Override the output path
-ytmgrab download 8BiLurrzFRw --path ~/Downloads
-
-# Download a playlist by ID or full URL
-ytmgrab playlist PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC
-
-# Override the download order
-ytmgrab playlist PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC --inverse
-
-# Search in YouTube Music
-ytmgrab search night changes
-# Or
-ytmgrab search 'night changes'
-
-# Override the search result count and preview thumbnail size
-ytmgrab search night changes --count 5 --tsize 32 # 32x32 pixel
-
-# Generate / view the config file
-ytmgrab --gen-config
-ytmgrab --show-config
-
-# Show help message
-ytmgrab --help
+# Or install locally for development purposes
+python -m pip install -e .
 ```
 
-**Note**: For IDs that has hiphen (`-`) as the first character, use double hiphen before the ID, like this: `ytmgrab download -- -JZLqTnZZlY`, else it'll fail as an option.
+### Build for Arch Linux
+
+Dependencies:
+
+- `python-hatchling`
+- `python-build`
+- `python-installer`
+- `python-wheel`
+
+```sh
+sudo pacman -S --needed python-hatchling python-build python-installer python-wheel
+```
+
+Build and install in one go (recommended):
+
+```sh
+makepkg -si
+```
+
+Or:
+
+```sh
+# Build first
+makepkg -s
+
+#And then install
+sudo pacman -U smytm-x.x-1-any.pkg.tar.zst
+```
 
 
-## Configuration
+# 🧾 License
 
-Config lives at `~/.config/ytmgrab/config.json`:
+This project is licensed under the GNU General Public License v3.0 only.
 
-| Key                  | Default   | Description                                                             |
-| -------------------  | --------- | ----------------------------------------------------------------------- |
-| `output_dir`         | `~/Music` | Where downloaded files are saved                                        |
-| `format`             | `"opus"`  | Default audio format (can be overridden with `-f`/`--format`)           |
-| `audio_quality`      | `"0"`     | yt-dlp audio quality (`0` = best, `9` = worst)                          |
-| `artist_in_filename` | `true`    | Includes ` - Artist Name` in the end of the filename                    |
-| `replaygain_always`  | `false`   | Always apply ReplayGain tags, without needing `-rg`/`--replaygain`      |
-| `thumbnail_size`     | `"16"`    | Default thumbnail preview size (can be overridden with `-ts`/`--tsize`) |
-| `nerd_font_icons`    | `true`    | Show Nerd Font icons in output; set `false` for plain text              |
-
-
-## License
-
-This project is licensed under the MIT License.
-
-### Third-party dependencies
-
-This project relies on several open-source tools and libraries.
-Please refer to their respective repositories or websites for license information (see [Requirements section](#requirements)).
+Also see [THIRD-PARTIES.md](https://github.com/SmileLulz/smytm/blob/main/THIRD-PARTIES.md).

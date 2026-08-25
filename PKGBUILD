@@ -1,15 +1,15 @@
-# Maintainer: SmileLulz <SmileLulz404@noreply.codeberg.org>
+# Maintainer: SmileLulz <SmileLulz@users.noreply.github.com>
 
-pkgname=ytmgrab
-pkgver=1.2.1
+pkgname=smytm
+pkgver=1.0.b1
 pkgrel=1
-pkgdesc="Download and search audio from YouTube Music"
+pkgdesc="CLI utility for searching and downloading musics / audios from YouTube (Music)."
 arch=('any')
-url="https://codeberg.org/SmileLulz404/ytmgrab"
-license=('MIT')
+url="https://github.com/SmileLulz/smytm"
+license=('GPL-3.0-only')
 
 depends=(
-    'python>=3.11'
+    'python>=3.10'
     'yt-dlp'
     'ffmpeg'
     'curl'
@@ -19,10 +19,10 @@ depends=(
 )
 
 makedepends=(
+    'python-hatchling'
     'python-build'
     'python-installer'
     'python-wheel'
-    'python-setuptools'
 )
 
 optdepends=(
@@ -35,20 +35,14 @@ sha256sums=()
 
 build() {
     cd "$startdir"
-
-    python -m build \
-        --wheel \
-        --no-isolation
+    python -m build --wheel --no-isolation
 }
 
 package() {
     cd "$startdir"
 
-    python -m installer \
-        --destdir="$pkgdir" \
-        dist/*.whl
+    python -m installer --destdir="$pkgdir" dist/*.whl
 
-    install -Dm644 \
-        LICENSE \
+    install -Dm644 LICENSE \
         "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
