@@ -30,14 +30,14 @@
 - `yt-dlp`
 - `ffmpeg`
 - `ytmusicapi`
-- `mutagen`
+- `mutagen` (optional - used by some yt-dlp metadata/thumbnail paths)
 - `curl`
 - `chafa`
 - `rsgain` (optional - ReplayGain 2.0 tagging)
 - `atomicparsley` (optional - M4A thumbnail embedding)
 
 > [!WARNING]
-> Installing with `pip` DOESN'T install the dependencies automatically, they are all checked at runtime. So install them manually.
+> Installing with `pip` DOESN'T install the system dependencies automatically; they are checked at runtime. Install them manually.
 >
 > This applies only on installation via python `pip`.
 

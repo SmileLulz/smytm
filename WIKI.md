@@ -27,7 +27,7 @@ smytm search never gonna give you up --tsize 32 # 32x32 pixel
 > Uses YouTube video ID
 
 > [!WARNING]
-> For IDs that has hiphen (`-`) as the first character, use double hiphen before the ID, like this: `smytm download -- -JZLqTnZZlY`, else it'll fail to download.
+> For IDs that has hyphen (`-`) as the first character, use double hyphen before the ID, like this: `smytm download -- -JZLqTnZZlY`, else it'll fail to download.
 
 Download normally:
 
@@ -58,7 +58,7 @@ smytm download lYBUbBu4W08 --path ~/Downloads
 > Uses YouTube playlist ID or full URL
 
 > [!WARNING]
-> For IDs that has hiphen (`-`) as the first character, use double hiphen before the ID, like this: `smytm download -- PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC`, else those tracks/audios will fail to download.
+> For IDs that has hyphen (`-`) as the first character, use double hyphen before the ID, like this: `smytm download -- PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC`, else those tracks/audios will fail to download.
 
 Download normally:
 

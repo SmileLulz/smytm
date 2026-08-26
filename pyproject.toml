@@ -1,15 +1,16 @@
 [build-system]
-requires = ["hatchling>=1.25"]
+requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
 name = "smytm"
-version = "1.0.b1"
+version = "1.0.b2"
 description = "CLI utility for searching and downloading musics / audios from YouTube (Music)."
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "SmileLulz" }]
-license = { text = "GPL-3.0-only" }
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
 dependencies = [
     # Intentionally empty, all dependencies are checked during runtime
 ]

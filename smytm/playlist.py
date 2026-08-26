@@ -28,7 +28,11 @@ def get_playlist_entries(playlist_id):
         url,
     ]
 
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False, timeout=300)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        print(f"Failed to fetch playlist: {exc}", file=sys.stderr)
+        return []
     if result.returncode != 0:
         print(f"Failed to fetch playlist: {result.stderr}", file=sys.stderr)
         return []
@@ -53,6 +57,12 @@ def run(args):
     cfg = config.load_config()
 
     audio_format = args.format or cfg.get("format", "opus")
+    try:
+        audio_format = utils.validate_audio_format(audio_format)
+    except ValueError as exc:
+        print(f"{icons.icon('error')}{exc}", file=sys.stderr)
+        sys.exit(2)
+
     audio_quality = cfg.get("audio_quality", "0")
 
     if args.path:
