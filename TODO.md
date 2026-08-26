@@ -1,6 +1,5 @@
 # ToDo
 
-- Add Debian build
 - Add Fedora build
 - Add git workflow for release automations
 - Add `-v, --version`
@@ -8,3 +7,5 @@
 - Include views in search results
 - Add direct playback with video ID
 - Add lyrics embedding if possible
+
+> Points are removed after completion or decision-change

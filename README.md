@@ -2,8 +2,10 @@
   <h1>🎵 smytm 🎵</h1>
   <h3>
     CLI utility for searching and downloading music and audio from YouTube and YouTube Music.
-    <br/>For non-audiophiles.<br>
   </h3>
+  <p>
+    smytm is a command-line utility for searching and downloading music and audio from YouTube and YouTube Music. It uses yt-dlp and other external command-line tools for searching, downloading, metadata processing, and terminal output.
+  </p>
 </div>
 
 <br></br>

@@ -1,5 +1,9 @@
 # Changelogs
 
+### v1.1.b2
+
+- Testing Fedora build
+
 ### v1.1.b1
 
 - Testing Debian build
