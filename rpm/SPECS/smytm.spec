@@ -21,6 +21,8 @@ smytm is a command-line utility for searching and downloading music and audio
 from YouTube and YouTube Music. It uses yt-dlp and other external command-line
 tools for searching, downloading, metadata processing, and terminal output.
 
+Requires: python3-ytmusicapi
+Requires: python3-mutagen
 Requires: yt-dlp
 Requires: ffmpeg
 Requires: curl

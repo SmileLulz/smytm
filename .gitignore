@@ -1,5 +1,14 @@
 # Customs
+
 *.bak
+*.rpm
+
+rpm/BUILD
+rpm/BUILDROOT
+rpm/RPMS
+rpm/SOURCES
+rpm/SRPMS
+
 
 # ---> Python
 # Byte-compiled / optimized / DLL files
