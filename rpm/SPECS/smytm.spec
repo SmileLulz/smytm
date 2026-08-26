@@ -16,7 +16,7 @@ BuildRequires: appstream
 Requires: python3-ytmusicapi
 Requires: python3-mutagen
 Requires: yt-dlp
-Requires: ffmpeg-free
+Requires: ffmpeg
 Requires: curl
 Requires: chafa
 Requires: AtomicParsley

@@ -36,9 +36,7 @@
 - `atomicparsley` (optional - M4A thumbnail embedding)
 
 > [!WARNING]
-> Installing with `pip` DOESN'T install the system dependencies automatically; they are checked at runtime. Install them manually.
->
-> This applies only on installation with python `pip`.
+> Installing with `pip` DOESN'T install the system dependencies automatically; they are checked at runtime. Install them manually. This applies only on installation with python `pip`.
 
 
 # 📥 Install
@@ -46,7 +44,9 @@
 > [!WARNING]
 > For Fedora, you'll have to enable the `RPM Fusion Free` repository; which will provide `ffmpeg` package.
 >
-> `sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
+> Enable RPM Fusion Free repo: `sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
+>
+> Install/swap ffmpeg: `sudo dnf swap ffmpeg-free ffmpeg --allowerasing`
 
 Guide will be added soon...
 
@@ -101,9 +101,11 @@ sudo pacman -U smytm-x.x-1-any.pkg.tar.zst
 ### Build for Fedora
 
 > [!WARNING]
-> You'll have to enable the `RPM Fusion Free` repository; which will provide `ffmpeg` package.
+> You'll have to enable the `RPM Fusion Free` repository; which will provide proper `ffmpeg` package.
 >
-> `sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
+> Enable RPM Fusion Free repo: `sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
+>
+> Install/swap ffmpeg: `sudo dnf swap ffmpeg-free ffmpeg --allowerasing`
 
 Dependencies:
 
