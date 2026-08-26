@@ -25,10 +25,23 @@
 **See [CHANGELOG.md](https://github.com/SmileLulz/smytm/blob/main/CHANGELOG.md) for latest update information.**
 
 
+# 🔗 Dependencies
+
+- [`Python`](https://github.com/python/cpython) (>= 3.10) (`python3`)
+- [`yt-dlp`](https://github.com/yt-dlp/yt-dlp)
+- [`ffmpeg`](https://ffmpeg.org/)
+- [`ytmusicapi`](https://github.com/sigma67/ytmusicapi)
+- [`mutagen`](https://github.com/quodlibet/mutagen)
+- [`curl`](https://github.com/curl/curl)
+- [`chafa`](https://github.com/hpjansson/chafa)
+- [`AtomicParsley`](https://github.com/wez/atomicparsley) (optional - M4A thumbnail embedding)
+- [`rsgain`](https://github.com/complexlogic/rsgain) (optional - ReplayGain 2.0 tagging)
+
+
 # 📥 Install
 
 > [!WARNING]
-> Installing with `pip` won't install the dependencies; they are checked at runtime. Install them manually. This applies only on installation with python `pip`.
+> Installing with `pip` won't install the dependencies; they are checked at runtime. Install them manually.
 
 > [!WARNING]
 > **Fedora** users must have RPM Fusion repository enabled and the full `ffmpeg` package installed from it. Fedora's `ffmpeg-free` package is not supported by `smytm`.
@@ -68,6 +81,8 @@ git clone https://github.com/SmileLulz/smytm.git && cd smytm
 ```
 
 ### Running directly
+
+> Install the dependencies manually first.
 
 ```sh
 python3 -m smytm

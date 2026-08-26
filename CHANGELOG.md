@@ -1,5 +1,11 @@
 # Changelogs
 
+### v1.1
+
+- Added Fedora support
+- Added install script for direct and easy install
+- Updated README.md
+
 ### v1.1.b7
 
 - Testing github workflow
