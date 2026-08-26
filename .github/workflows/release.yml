@@ -42,8 +42,7 @@ jobs:
             ffmpeg \
             curl \
             chafa \
-            atomicparsley \
-            rsgain
+            atomicparsley
 
       - name: Create build user
         run: |
@@ -170,7 +169,9 @@ jobs:
 
       - name: Run rpmlint
         run: |
-          rpmlint "${{ steps.package.outputs.pkg }}"
+          rpmlint \
+            --rpmlintrc smytm.rpmlintrc \
+            "${{ steps.package.outputs.pkg }}"
 
       - name: Verify package
         run: |
