@@ -1,5 +1,5 @@
 Name:    smytm
-Version:        1.1.b5
+Version:        1.1.b6
 Release: 1%{?dist}
 Summary: CLI utility for searching and downloading music from YouTube and YouTube Music
 
@@ -57,6 +57,6 @@ appstreamcli validate \
 %{_metainfodir}/io.github.SmileLulz.smytm.metainfo.xml
 
 %changelog
-* Thu Aug 27 2026 SmileLulz - 1.1.b5-1
+* Thu Aug 27 2026 SmileLulz - 1.1.b6-1
 - Testing github workflow
 - Testing installtion script
