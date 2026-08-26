@@ -39,6 +39,7 @@ def download_single(
         "yt-dlp",
         "--print", "%(title)s\t%(artist)s\t%(uploader)s",
         "--no-playlist",
+        "--",
         url,
     ]
     result = _run(info_cmd, capture_output=True, text=True)
@@ -77,6 +78,7 @@ def download_single(
         "--output", str(output_path),
         "--rm-cache-dir",
         "--no-keep-video",
+        "--",
         url,
     ]
 

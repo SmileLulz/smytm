@@ -1,6 +1,7 @@
 """Command-line interface for smytm."""
 
 import argparse
+import sys
 
 from . import config
 
@@ -20,6 +21,52 @@ def thumbnail_size(value):
     """Parse a positive thumbnail size in pixels."""
     return positive_int(value)
 
+
+def _normalize_leading_hyphen_id(argv):
+    """Insert '--' before a leading-hyphen video/playlist ID.
+
+    The CLI should not require users to know argparse's '--' convention.
+    Only the first positional argument of download/playlist is normalized;
+    legitimate options and option values remain untouched.
+    """
+    if not argv:
+        return argv
+
+    try:
+        command_index = next(
+            i for i, token in enumerate(argv)
+            if token in {"download", "d", "playlist", "p"}
+        )
+    except StopIteration:
+        return argv
+
+    command = argv[command_index]
+    value_options = {"-f", "--format", "-p", "--path"}
+    flag_options = {"-rg", "--replaygain", "-inv", "--inverse"}
+
+    i = command_index + 1
+    while i < len(argv):
+        token = argv[i]
+
+        if token == "--":
+            return argv
+
+        if token.startswith("-"):
+            if token in value_options:
+                i += 2
+                continue
+
+            if any(token.startswith(option + "=") for option in ("--format", "--path")):
+                i += 1
+                continue
+
+            if token in flag_options:
+                i += 1
+                continue
+
+            return argv[:i] + ["--"] + argv[i:]
+        return argv
+    return argv
 
 def main():
     parser = argparse.ArgumentParser(
@@ -88,7 +135,8 @@ def main():
         "-sc", "--show-config", action="store_true", help="Show current config"
     )
 
-    args = parser.parse_args()
+    argv = _normalize_leading_hyphen_id(sys.argv[1:])
+    args = parser.parse_args(argv)
 
     if args.gen_config:
         config.create_default_config()

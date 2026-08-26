@@ -24,10 +24,10 @@ smytm search never gonna give you up --tsize 32 # 32x32 pixel
 
 ### Download a track / audio
 
-> Uses YouTube video ID
-
-> [!WARNING]
-> For IDs that has hyphen (`-`) as the first character, use double hyphen before the ID, like this: `smytm download -- -JZLqTnZZlY`, else it'll fail to download.
+> [!NOTE]
+> Uses YouTube video ID.
+>
+> Always put the ID at the end. Example structure: `smytm [OPTIONS] <ID>`
 
 Download normally:
 
@@ -38,27 +38,27 @@ smytm download lYBUbBu4W08
 Override the format:
 
 ```sh
-smytm download lYBUbBu4W08 --format m4a
+smytm download --format m4a lYBUbBu4W08
 ```
 
 Apply ReplayGain (2.0) tags:
 
 ```sh
-smytm download lYBUbBu4W08 --replaygain
+smytm download --replaygain lYBUbBu4W08
 ```
 
 Override the output/download path:
 
 ```sh
-smytm download lYBUbBu4W08 --path ~/Downloads
+smytm download --path ~/Downloads lYBUbBu4W08
 ```
 
 ### Download a playlist
 
-> Uses YouTube playlist ID or full URL
-
-> [!WARNING]
-> For IDs that has hyphen (`-`) as the first character, use double hyphen before the ID, like this: `smytm download -- PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC`, else those tracks/audios will fail to download.
+> [!NOTE]
+> Uses YouTube playlist ID or full URL.
+>
+> Always put the ID at the end. Example structure: `smytm [OPTIONS] <ID_or_URL>`
 
 Download normally:
 
@@ -69,7 +69,7 @@ smytm playlist PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC
 Override the download order:
 
 ```sh
-smytm playlist PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC --inverse
+smytm playlist --inverse PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC
 ```
 
 ### Other uses

@@ -1,7 +1,7 @@
 # Maintainer: SmileLulz <SmileLulz@users.noreply.github.com>
 
 pkgname=smytm
-pkgver=1.0.b2
+pkgver=1.0
 pkgrel=1
 pkgdesc="CLI utility for searching and downloading musics / audios from YouTube (Music)."
 arch=('any')

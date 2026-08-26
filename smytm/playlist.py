@@ -25,6 +25,7 @@ def get_playlist_entries(playlist_id):
         "--flat-playlist",
         "--print", "%(id)s\t%(title)s",
         "--no-warnings",
+        "--",
         url,
     ]
 

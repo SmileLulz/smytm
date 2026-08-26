@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "smytm"
-version = "1.0.b2"
+version = "1.0"
 description = "CLI utility for searching and downloading musics / audios from YouTube (Music)."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,7 +19,7 @@ dependencies = [
 Repository = "https://github.com/SmileLulz/smytm"
 
 [project.scripts]
-smilemplayer = "smytm.cli:main"
+smytm = "smytm.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["smytm"]

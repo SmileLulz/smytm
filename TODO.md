@@ -1,5 +1,8 @@
 # ToDo
 
-- Fix the hyphen id issue
-- Add `-yt, --youtube` to force-use YouTube link instead of music; without any fallback
+- Add Debian build
+- Add Fedora build
+- Add git workflow for release automations
+- Add `-v, --version`
+- Add `-yt, --youtube` to force-use YouTube link instead of YouTube Music; without any fallback
 - Include views in search results

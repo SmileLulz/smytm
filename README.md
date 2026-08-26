@@ -8,13 +8,10 @@
 
 <br></br>
 
-> [!WARNING]
+> [!NOTE]
 > This project was meant to be a personal project, but thought it would be nice to share it with others.
 > 
-> By the way, I am not accepting contributions. Thank you. Hope you like this utility :)
-
-> [!WARNING]
-> It's still in beta, some things and features may not avilable currently.
+> By the way, I am not accepting contributions. Thank you. Hope you like this small utility :)
 
 
 # ✨ Features
@@ -30,7 +27,7 @@
 - `yt-dlp`
 - `ffmpeg`
 - `ytmusicapi`
-- `mutagen` (optional - used by some yt-dlp metadata/thumbnail paths)
+- `mutagen`
 - `curl`
 - `chafa`
 - `rsgain` (optional - ReplayGain 2.0 tagging)
@@ -39,7 +36,7 @@
 > [!WARNING]
 > Installing with `pip` DOESN'T install the system dependencies automatically; they are checked at runtime. Install them manually.
 >
-> This applies only on installation via python `pip`.
+> This applies only on installation with python `pip`.
 
 
 # 📥 Install
@@ -101,7 +98,7 @@ Or:
 # Build first
 makepkg -s
 
-#And then install
+# And then install
 sudo pacman -U smytm-x.x-1-any.pkg.tar.zst
 ```
 
