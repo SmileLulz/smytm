@@ -1,5 +1,10 @@
 # Changelogs
 
+### v1.1.b4
+
+- Testing github workflow
+- Testing installtion script
+
 ### v1.1.b3
 
 - Testing github workflow
