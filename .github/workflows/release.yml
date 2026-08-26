@@ -334,54 +334,54 @@ jobs:
               -print -quit
           )"
 
-            - name: Create or update GitHub Release
-              env:
-                GH_TOKEN: ${{ github.token }}
-              run: |
-                set -euo pipefail
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
 
-                tag="${GITHUB_REF_NAME}"
-                repo="${GITHUB_REPOSITORY}"
-                commit_sha="${GITHUB_SHA}"
+          tag="${GITHUB_REF_NAME}"
+          repo="${GITHUB_REPOSITORY}"
+          commit_sha="${GITHUB_SHA}"
 
-                commit_message="$(
-                  curl -fsSL \
-                    -H "Authorization: Bearer ${GH_TOKEN}" \
-                    -H "Accept: application/vnd.github+json" \
-                    -H "X-GitHub-Api-Version: 2026-03-10" \
-                    "https://api.github.com/repos/${repo}/commits/${commit_sha}" |
-                  python3 -c \
-                    'import json,sys; print(json.load(sys.stdin)["commit"]["message"])'
-                )"
+          commit_message="$(
+            curl -fsSL \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2026-03-10" \
+              "https://api.github.com/repos/${repo}/commits/${commit_sha}" |
+            python3 -c \
+              'import json,sys; print(json.load(sys.stdin)["commit"]["message"])'
+          )"
 
-                notes="$(printf '%s\n' "$commit_message" | sed '1d')"
+          notes="$(printf '%s\n' "$commit_message" | sed '1d')"
 
-                if gh release view "$tag" --repo "$repo" >/dev/null 2>&1; then
-                  echo "Release ${tag} already exists."
+          if gh release view "$tag" --repo "$repo" >/dev/null 2>&1; then
+            echo "Release ${tag} already exists."
 
-                  gh release edit "$tag" \
-                    --repo "$repo" \
-                    --title "$tag" \
-                    --notes "$notes"
-                else
-                  echo "Creating release ${tag}."
+            gh release edit "$tag" \
+              --repo "$repo" \
+              --title "$tag" \
+              --notes "$notes"
+          else
+            echo "Creating release ${tag}."
 
-                  gh release create "$tag" \
-                    --repo "$repo" \
-                    --target "$commit_sha" \
-                    --title "$tag" \
-                    --notes "$notes"
-                fi
+            gh release create "$tag" \
+              --repo "$repo" \
+              --target "$commit_sha" \
+              --title "$tag" \
+              --notes "$notes"
+          fi
 
-                find artifacts -type f -print0 |
-                while IFS= read -r -d '' file; do
-                  echo "Uploading $(basename "$file")..."
+          find artifacts -type f -print0 |
+          while IFS= read -r -d '' file; do
+            echo "Uploading $(basename "$file")..."
 
-                  gh release upload "$tag" "$file" \
-                    --repo "$repo" \
-                    --clobber
+            gh release upload "$tag" "$file" \
+              --repo "$repo" \
+              --clobber
 
-                  echo "Uploaded $(basename "$file")."
-                done
+            echo "Uploaded $(basename "$file")."
+          done
 
-                echo "Release ${tag} published successfully."
+          echo "Release ${tag} published successfully."
