@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="console-application">
+    <id>io.github.SmileLulz.smytm</id>
+
+    <developer id="io.github.SmileLulz">
+        <name>SmileLulz</name>
+    </developer>
+
+    <name>smytm</name>
+    <summary>A CLI utility for searching and downloading music and audio from YouTube and YouTube Music</summary>
+
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-3.0-only</project_license>
+
+    <url type="homepage">https://github.com/SmileLulz/smytm</url>
+    <url type="bugtracker">https://github.com/SmileLulz/smytm/issues</url>
+    <url type="vcs-browser">https://github.com/SmileLulz/smytm</url>
+
+    <provides>
+        <binary>smytm</binary>
+    </provides>
+
+    <keywords>
+        <keyword>youtube</keyword>
+        <keyword>YouTube Music</keyword>
+        <keyword>music</keyword>
+        <keyword>audio</keyword>
+        <keyword>download</keyword>
+        <keyword>downloader</keyword>
+        <keyword>youtube-dl</keyword>
+        <keyword>yt-dlp</keyword>
+        <keyword>playlist</keyword>
+    </keywords>
+
+    <description>
+        <p>
+            smytm is a command-line utility for searching and downloading music and audio from YouTube and YouTube Music.
+        </p>
+        <p>
+            It uses yt-dlp and other external command-line tools for searching, downloading, metadata processing, and terminal output.
+        </p>
+    </description>
+
+    <content_rating type="oars-1.1"/>
+
+    <supports>
+        <control>keyboard</control>
+    </supports>
+</component>

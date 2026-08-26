@@ -1,0 +1,30 @@
+Source: smytm
+Section: sound
+Priority: optional
+Maintainer: SmileLulz <SmileLulz@users.noreply.github.com>
+Build-Depends:
+    debhelper-compat (= 13),
+    dh-sequence-python3,
+    pybuild-plugin-pyproject,
+    python3-all,
+    python3-hatchling
+Standards-Version: 4.6.2
+
+Package: smytm
+Architecture: all
+Depends:
+    python3,
+    python3-ytmusicapi,
+    python3-mutagen,
+    yt-dlp,
+    ffmpeg,
+    curl,
+    chafa,
+    atomicparsley,
+    rsgain,
+    ${misc:Depends},
+    ${python3:Depends}
+Description: CLI utility for searching and downloading music and audio from YouTube and YouTube Music
+ smytm is a command-line utility for searching and downloading music and audio
+ from YouTube and YouTube Music. It uses yt-dlp and other external command-line
+ tools for searching, downloading, metadata processing, and terminal output.

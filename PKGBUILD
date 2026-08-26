@@ -1,7 +1,7 @@
 # Maintainer: SmileLulz <SmileLulz@users.noreply.github.com>
 
 pkgname=smytm
-pkgver=1.0
+pkgver=1.1.b1
 pkgrel=1
 pkgdesc="CLI utility for searching and downloading musics / audios from YouTube (Music)."
 arch=('any')
@@ -10,12 +10,12 @@ license=('GPL-3.0-only')
 
 depends=(
     'python>=3.10'
+    'python-ytmusicapi'
+    'python-mutagen'
     'yt-dlp'
     'ffmpeg'
     'curl'
     'chafa'
-    'python-ytmusicapi'
-    'python-mutagen'
 )
 
 makedepends=(

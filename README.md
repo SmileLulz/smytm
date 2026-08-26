@@ -1,7 +1,7 @@
 <div align="center">
   <h1>🎵 smytm 🎵</h1>
   <h3>
-    CLI utility for searching and downloading musics / audios from YouTube (Music).
+    CLI utility for searching and downloading music and audio from YouTube and YouTube Music.
     <br/>For non-audiophiles.<br>
   </h3>
 </div>
@@ -57,20 +57,20 @@ git clone https://github.com/SmileLulz/smytm.git && cd smytm
 ### Running directly
 
 ```sh
-python -m smytm
+python3 -m smytm
 ```
 
 ### Build for python pip
 
 ```sh
 # Build the package
-python -m build
+python3 -m build
 
 # Install locally
-python -m pip install .
+python3 -m pip install .
 
 # Or install locally for development purposes
-python -m pip install -e .
+python3 -m pip install -e .
 ```
 
 ### Build for Arch Linux

@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --buildsystem=pybuild
+
+override_dh_auto_install:
+	dh_auto_install
+
+	install -Dm644 data/metainfo/io.github.SmileLulz.smytm.metainfo.xml \
+		debian/smytm/usr/share/metainfo/io.github.SmileLulz.smytm.metainfo.xml
+
+	install -Dm644 LICENSE \
+		debian/smytm/usr/share/doc/smytm/LICENSE
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf dist build *.egg-info
