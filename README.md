@@ -4,7 +4,7 @@
     CLI utility for searching and downloading music and audio from YouTube and YouTube Music.
   </h3>
   <p>
-    smytm is a command-line utility for searching and downloading music and audio from YouTube and YouTube Music. It uses yt-dlp and other external command-line tools for searching, downloading, metadata processing, and terminal output.
+    <b>smytm</b> is a command-line utility for searching and downloading music and audio from YouTube and YouTube Music. It uses yt-dlp and other external command-line tools for searching, downloading, metadata processing, and terminal output.
   </p>
 </div>
 
@@ -13,7 +13,7 @@
 > [!NOTE]
 > This project was meant to be a personal project, but thought it would be nice to share it with others.
 > 
-> By the way, I am not accepting contributions. Thank you. Hope you like this small utility :)
+> So, I am not accepting contributions. Thank you. Hope you like this small utility :)
 
 
 # ✨ Features
@@ -22,33 +22,39 @@
 - Download songs / playlists / any audios from YouTube Music or YouTube
 - See [WIKI.md](https://github.com/SmileLulz/smytm/blob/main/WIKI.md) for more help.
 
-
-# 🔗 Dependencies
-
-- `python` (>= 3.10) (`python3`)
-- `yt-dlp`
-- `ffmpeg`
-- `ytmusicapi`
-- `mutagen`
-- `curl`
-- `chafa`
-- `rsgain` (optional - ReplayGain 2.0 tagging)
-- `atomicparsley` (optional - M4A thumbnail embedding)
-
-> [!WARNING]
-> Installing with `pip` DOESN'T install the system dependencies automatically; they are checked at runtime. Install them manually. This applies only on installation with python `pip`.
+**See [CHANGELOG.md](https://github.com/SmileLulz/smytm/blob/main/CHANGELOG.md) for latest update information.**
 
 
 # 📥 Install
 
 > [!WARNING]
-> For Fedora, you'll have to enable the `RPM Fusion Free` repository; which will provide `ffmpeg` package.
->
-> Enable RPM Fusion Free repo: `sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
->
-> Install/swap ffmpeg: `sudo dnf swap ffmpeg-free ffmpeg --allowerasing`
+> Installing with `pip` won't install the dependencies; they are checked at runtime. Install them manually. This applies only on installation with python `pip`.
 
-Guide will be added soon...
+> [!WARNING]
+> **Fedora** users must have RPM Fusion repository enabled and the full `ffmpeg` package installed from it. Fedora's `ffmpeg-free` package is not supported by `smytm`.
+
+### For any distro
+
+_This will install the latest release on any Arch or Fedora distributions._
+
+Install:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/SmileLulz/smytm/main/install.sh | bash
+```
+
+But if you want to inspect the installation script first:
+
+```bash
+# Download the script
+curl -fsSL https://raw.githubusercontent.com/SmileLulz/smytm/main/install.sh -o install.sh
+
+# Inspect
+less install.sh
+
+# Then you can install with the downloaded script
+bash install.sh
+```
 
 
 # 📦 Build by yourself
@@ -63,26 +69,23 @@ git clone https://github.com/SmileLulz/smytm.git && cd smytm
 
 ### Running directly
 
-Do this when you're testing.
-
 ```sh
 python3 -m smytm
 ```
 
 ### Build for Arch Linux
 
-Dependencies:
-
-- `python-hatchling`
-- `python-build`
-- `python-installer`
-- `python-wheel`
+Build dependencies:
 
 ```sh
-sudo pacman -S --needed python-hatchling python-build python-installer python-wheel
+sudo pacman -S --needed \
+    python-hatchling \
+    python-build \
+    python-installer \
+    python-wheel
 ```
 
-Build and install in one go (recommended):
+Build and install in one go:
 
 ```sh
 makepkg -si
@@ -101,15 +104,21 @@ sudo pacman -U smytm-x.x-1-any.pkg.tar.zst
 ### Build for Fedora
 
 > [!WARNING]
-> You'll have to enable the `RPM Fusion Free` repository; which will provide proper `ffmpeg` package.
->
-> Enable RPM Fusion Free repo: `sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
->
-> Install/swap ffmpeg: `sudo dnf swap ffmpeg-free ffmpeg --allowerasing`
+> You must have RPM Fusion repository enabled and the full `ffmpeg` package installed from it. Fedora's `ffmpeg-free` package is not supported by `smytm`.
 
-Dependencies:
+Build dependencies:
 
-- Will list soon...
+```sh
+sudo dnf install \
+    git \
+    rpm-build \
+    rpmdevtools \
+    appstream \
+    python3-devel \
+    python3-hatchling \
+    python3-pip \
+    python3-rpm-generators
+```
 
 Create required directories:
 
@@ -117,15 +126,20 @@ Create required directories:
 mkdir -p rpm/{BUILD,BUILDROOT,RPMS,SOURCES,SRPMS}
 ```
 
-**⚠︎ Now, you have two options for your build:**
+> [!NOTE]
+> Now, you have two options for your build:
+> 
+> Option 1: Use the release source archive.
+>
+> Option 2: Use a specific commit source archive.
 
-**Option 1:** Use the release source archive:
+Option 1:
 
-This is for most users who want to just build the release version.
+_This is for most users who just want to build the release version._
 
-> If you want to build an old or any previous version/commit, do `git checkout` to that commit tag first (e.g. `git checkout v1.6`).
+> Make sure to `git checkout` to that commit tag first (e.g. `git checkout v1.6`).
 
-Download the release source archive:
+Pull the release source archive:
 
 ```sh
 spectool --define "_topdir $PWD/rpm" rpm/SPECS/smytm.spec
@@ -143,11 +157,11 @@ Install:
 sudo dnf install rpm/RPMS/noarch/smytm-x.x-1.fcxx.noarch.rpm
 ```
 
-**Option 2:** Use the local or specific commit source archive:
+Option 2:
 
-This is for local testing or building a specific version.
+_This is mostly for local testing or building from a specific commit._
 
-> If you want to build an old or any previous version/commit, do `git checkout` to that commit first (e.g. `git checkout <commit_hash_or_tag>`).
+> Make sure to `git checkout` to that commit first (e.g. `git checkout <commit_hash_or_tag>`).
 
 Create the source archive from current commit (replace `x.x` with the actual version):
 
