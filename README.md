@@ -43,6 +43,11 @@
 
 # 📥 Install
 
+> [!WARNING]
+> For Fedora, you'll have to enable the `RPM Fusion Free` repository; which will provide `ffmpeg` package.
+>
+> `sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
+
 Guide will be added soon...
 
 
@@ -58,21 +63,10 @@ git clone https://github.com/SmileLulz/smytm.git && cd smytm
 
 ### Running directly
 
+Do this when you're testing.
+
 ```sh
 python3 -m smytm
-```
-
-### Build for python pip
-
-```sh
-# Build the package
-python3 -m build
-
-# Install locally
-python3 -m pip install .
-
-# Or install locally for development purposes
-python3 -m pip install -e .
 ```
 
 ### Build for Arch Linux
@@ -102,6 +96,73 @@ makepkg -s
 
 # And then install
 sudo pacman -U smytm-x.x-1-any.pkg.tar.zst
+```
+
+### Build for Fedora
+
+> [!WARNING]
+> You'll have to enable the `RPM Fusion Free` repository; which will provide `ffmpeg` package.
+>
+> `sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
+
+Dependencies:
+
+- Will list soon...
+
+Create required directories:
+
+```sh
+mkdir -p rpm/{BUILD,BUILDROOT,RPMS,SOURCES,SRPMS}
+```
+
+**⚠︎ Now, you have two options for your build:**
+
+**Option 1:** Use the release source archive:
+
+This is for most users who want to just build the release version.
+
+> If you want to build an old or any previous version/commit, do `git checkout` to that commit tag first (e.g. `git checkout v1.6`).
+
+Download the release source archive:
+
+```sh
+spectool --define "_topdir $PWD/rpm" rpm/SPECS/smytm.spec
+```
+
+Build:
+
+```sh
+rpmbuild --define "_topdir $PWD/rpm" -ba rpm/SPECS/smytm.spec
+```
+
+Install:
+
+```sh
+sudo dnf install rpm/RPMS/noarch/smytm-x.x-1.fcxx.noarch.rpm
+```
+
+**Option 2:** Use the local or specific commit source archive:
+
+This is for local testing or building a specific version.
+
+> If you want to build an old or any previous version/commit, do `git checkout` to that commit first (e.g. `git checkout <commit_hash_or_tag>`).
+
+Create the source archive from current commit (replace `x.x` with the actual version):
+
+```sh
+git archive --format=tar.gz --prefix=smytm-x.x/ HEAD > rpm/SOURCES/vx.x.tar.gz
+```
+
+Build:
+
+```sh
+rpmbuild --define "_topdir $PWD/rpm" -ba rpm/SPECS/smytm.spec
+```
+
+Install:
+
+```sh
+sudo dnf install rpm/RPMS/noarch/smytm-x.x-1.fcxx.noarch.rpm
 ```
 
 

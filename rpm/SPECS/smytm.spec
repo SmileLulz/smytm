@@ -19,7 +19,7 @@ Requires: yt-dlp
 Requires: ffmpeg
 Requires: curl
 Requires: chafa
-Requires: atomicparsley
+Requires: AtomicParsley
 Requires: rsgain
 
 %generate_buildrequires
