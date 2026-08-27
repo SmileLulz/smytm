@@ -1,5 +1,11 @@
 # Changelogs
 
+### v1.2
+
+- Added synchronized lyrics downloads; as `.lrc` sidecar files
+- Added `lyrics_always` in config; `false` by default
+- Fixed `--help` command not working
+
 ### v1.1
 
 - Added Fedora support

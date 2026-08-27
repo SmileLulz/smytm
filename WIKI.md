@@ -47,6 +47,12 @@ Apply ReplayGain (2.0) tags:
 smytm download --replaygain lYBUbBu4W08
 ```
 
+Download lyrics as an `.lrc` sidecar file:
+
+```sh
+smytm download --lyrics lYBUbBu4W08
+```
+
 Override the output/download path:
 
 ```sh
@@ -70,6 +76,12 @@ Override the download order:
 
 ```sh
 smytm playlist --inverse PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC
+```
+
+Download lyrics as an `.lrc` sidecar file for each track:
+
+```sh
+smytm playlist --lyrics PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC
 ```
 
 ### Other uses

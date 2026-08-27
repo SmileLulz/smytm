@@ -20,6 +20,7 @@
 
 - Search for songs in YouTube Music
 - Download songs / playlists / any audios from YouTube Music or YouTube
+- Download synchronized lyrics as `.lrc` sidecar files
 - See [WIKI.md](https://github.com/SmileLulz/smytm/blob/main/WIKI.md) for more help.
 
 **See [CHANGELOG.md](https://github.com/SmileLulz/smytm/blob/main/CHANGELOG.md) for latest update information.**
@@ -201,4 +202,4 @@ sudo dnf install rpm/RPMS/noarch/smytm-x.x-1.fcxx.noarch.rpm
 
 This project is licensed under the GNU General Public License v3.0 only.
 
-Also see [THIRD-PARTIES.md](https://github.com/SmileLulz/smytm/blob/main/THIRD-PARTIES.md).
+Also see [DEPENDENCIES.md](https://github.com/SmileLulz/smytm/blob/main/DEPENDENCIES.md).

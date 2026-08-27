@@ -42,7 +42,7 @@ def _normalize_leading_hyphen_id(argv):
 
     command = argv[command_index]
     value_options = {"-f", "--format", "-p", "--path"}
-    flag_options = {"-rg", "--replaygain", "-inv", "--inverse"}
+    flag_options = {"-rg", "--replaygain", "-ly", "--lyrics", "-inv", "--inverse", "-h", "--help"}
 
     i = command_index + 1
     while i < len(argv):
@@ -91,6 +91,10 @@ def main():
     )
     download_parser.add_argument(
         "-p", "--path", type=str, help="Output directory (overrides config/default)"
+    )
+    download_parser.add_argument(
+        "-ly", "--lyrics", action="store_true",
+        help="Download synchronized lyrics as an '.lrc' sidecar file",
     )
 
     playlist_parser = subparsers.add_parser(

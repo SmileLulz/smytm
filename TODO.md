@@ -1,5 +1,6 @@
 # ToDo
 
+- Add another fedora build support for `ffmpeg-free` library
 - Add `-v, --version`
 - Add `-yt, --youtube` to force-use YouTube link instead of YouTube Music; without any fallback
 - Include views in search results

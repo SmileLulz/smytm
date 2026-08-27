@@ -13,6 +13,7 @@ DEFAULT_CONFIG = {
     "audio_quality": "0",
     "artist_in_filename": True,
     "replaygain_always": False,
+    "lyrics_always": False,
     "thumbnail_size": "16",
     "nerd_font_icons": True,
 }

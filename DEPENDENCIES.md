@@ -7,7 +7,7 @@ All of them (except `ytmusicapi`) run as subprocess rather than importing or lin
 Please refer to their respective repositories or websites for license information.
 
 
-| Tool / Library                                        | Note                        | Depend   |
+| Tool / Library / Sources                              | Note                        | Depend   |
 | ----------------------------------------------------- | --------------------------- | -------- |
 | [Python](https://github.com/python/cpython) (>= 3.10) | Base language               | Required |
 | [yt-dlp](https://github.com/yt-dlp/yt-dlp)            | Core                        | Required |
@@ -18,3 +18,4 @@ Please refer to their respective repositories or websites for license informatio
 | [chafa](https://github.com/hpjansson/chafa)           | For thumbnail previews      | Required |
 | [AtomicParsley](https://github.com/wez/atomicparsley) | For M4A thumbnail embedding | Optional |
 | [rsgain](https://github.com/complexlogic/rsgain)      | For ReplayGain 2.0 tagging  | Optional |
+| [LRCLIB](https://lrclib.net/)                         | LRC sidecar fallback source | Optional |

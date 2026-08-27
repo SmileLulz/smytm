@@ -134,6 +134,7 @@ def run(args):
         output_dir = Path(cfg.get("output_dir", str(Path.home() / "Music")))
 
     apply_replaygain = args.replaygain or cfg.get("replaygain_always", False)
+    download_lyrics = args.lyrics or cfg.get("lyrics_always", False)
     include_artist = bool(cfg.get("artist_in_filename", True))
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -151,6 +152,11 @@ def run(args):
 
     if success:
         print(f"\n{icons.icon('success')} Download successful!")
+        if download_lyrics and output_path:
+            print()
+            from . import lyrics
+            lyrics.write_lrc(output_path, args.video_id)
+
         if apply_replaygain and output_path:
             print()
             utils.apply_replaygain(output_path, audio_format)
