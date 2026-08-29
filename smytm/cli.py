@@ -3,6 +3,8 @@
 import argparse
 import sys
 
+from importlib.metadata import version
+
 from . import config
 
 
@@ -136,6 +138,11 @@ def main():
         help="Thumbnail size for chafa (e.g., 16, 24, 40)",
     )
 
+    parser.add_argument(
+        "-v", "--version",
+        action="version",
+        version=f"smytm {version('smytm')}",
+    )
     parser.add_argument(
         "-gc", "--gen-config", action="store_true", help="Generate default config"
     )

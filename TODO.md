@@ -1,6 +1,6 @@
 # ToDo
 
-- Fix help message not showing all args/options
+- Add direct-wheel-pull script for Windows
 - Make the nerd font icons configurable as well (or make the lines themselves configurable instead)
 - Add another fedora build support for `ffmpeg-free` library
 - Add `-v, --version`

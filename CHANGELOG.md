@@ -1,5 +1,9 @@
 # Changelogs
 
+### v1.4
+
+- Added `-v, --version`
+
 ### v1.3
 
 - Added Windows build support
