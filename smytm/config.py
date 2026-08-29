@@ -6,19 +6,11 @@ import sys
 from pathlib import Path
 
 if sys.platform.startswith("win"):
-    _config_root = Path(
-        os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming")
-    )
-    _cache_root = Path(
-        os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local")
-    )
+    _config_root = Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming"))
+    _cache_root = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local"))
 else:
-    _config_root = Path(
-        os.environ.get("XDG_CONFIG_HOME") or (Path.home() / ".config")
-    )
-    _cache_root = Path(
-        os.environ.get("XDG_CACHE_HOME") or (Path.home() / ".cache")
-    )
+    _config_root = Path(os.environ.get("XDG_CONFIG_HOME") or (Path.home() / ".config"))
+    _cache_root = Path(os.environ.get("XDG_CACHE_HOME") or (Path.home() / ".cache"))
 
 CONFIG_DIR = _config_root / "smytm"
 CONFIG_FILE = CONFIG_DIR / "config.json"
@@ -44,8 +36,15 @@ def create_default_config():
         return False
 
     CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+
+    from . import icons
+    default_icons = icons.ICONS.copy()
+
+    config_data = DEFAULT_CONFIG.copy()
+    config_data["icons"] = default_icons
+
     with CONFIG_FILE.open("w", encoding="utf-8") as config_file:
-        json.dump(DEFAULT_CONFIG, config_file, indent=4)
+        json.dump(config_data, config_file, indent=4, ensure_ascii=False)
         config_file.write("\n")
     print(f"Created config: {CONFIG_FILE}")
     return True

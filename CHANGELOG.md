@@ -1,5 +1,10 @@
 # Changelogs
 
+### v1.7
+
+- Solved crash on invalid id
+- Made icon glyphs configurable
+
 ### v1.6
 
 - Reverted the help message to compact version

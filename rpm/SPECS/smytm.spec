@@ -1,5 +1,5 @@
 Name:    smytm
-Version:        1.6
+Version:        1.7
 Release: 1%{?dist}
 Summary: CLI utility for searching and downloading music from YouTube and YouTube Music
 
@@ -56,9 +56,6 @@ appstreamcli validate \
 %{_metainfodir}/io.github.SmileLulz.smytm.metainfo.xml
 
 %changelog
-* Sat Aug 29 2026 SmileLulz - 1.6-1
-- Reverted the help message to compact version
-- Changed some icon glyphs, and now using direct glyph copy instead of code
-- Added `-yt, --youtube` for single downloads to force-use YouTube instead of YouTube Music
-- Added `-s, --skip` for skipping the downloads that are already present
-- Added `skip_always` in config, `false` by default
+* Sun Aug 30 2026 SmileLulz - 1.7-1
+- Solved crash on invalid id
+- Made icon glyphs configurable

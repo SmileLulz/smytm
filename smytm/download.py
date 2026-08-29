@@ -30,7 +30,6 @@ def download_single(
     output_dir,
     audio_format,
     audio_quality,
-    video_id,
     include_artist=True,
     skip_existing=False,
 ):
@@ -43,11 +42,11 @@ def download_single(
         audio_format = utils.validate_audio_format(audio_format)
     except ValueError as exc:
         print(f"{icons.icon('error')}{exc}", file=sys.stderr)
-        return False, None
+        return False, None, False
 
     ytdlp = utils.find_tool("yt-dlp", "yt-dlp.exe")
     if ytdlp is None:
-        return False, None
+        return False, None, False
 
     info_cmd = [
         ytdlp,
@@ -58,7 +57,7 @@ def download_single(
     ]
     result = _run(info_cmd, capture_output=True, text=True)
     if result is None or result.returncode != 0:
-        return False, None
+        return False, None, False
 
     parts = result.stdout.strip().split("\t")
     title = parts[0] if parts and parts[0] else "Unknown"
@@ -123,13 +122,13 @@ def download_by_id(
     """
     if not utils.validate_video_id(video_id):
         print(f"Invalid video ID: {video_id}")
-        return False, None
+        return False, None, False
 
     music_url = f"https://music.youtube.com/watch?v={video_id}"
     youtube_url = f"https://www.youtube.com/watch?v={video_id}"
 
     if force_youtube:
-        print(f"{icons.icon('music')} Using youtube.com...")
+        print(f"{icons.icon('music')} Using YouTube...")
         return download_single(
             youtube_url,
             output_dir,
@@ -140,13 +139,12 @@ def download_by_id(
             skip_existing,
         )
 
-    print(f"{icons.icon('music')} Trying music.youtube.com...")
+    print(f"{icons.icon('music')} Trying YouTube Music...")
     success, output_path, skipped = download_single(
         music_url,
         output_dir,
         audio_format,
         audio_quality,
-        video_id,
         include_artist,
         skip_existing,
     )
@@ -163,7 +161,6 @@ def download_by_id(
         output_dir,
         audio_format,
         audio_quality,
-        video_id,
         include_artist,
         skip_existing,
     )
