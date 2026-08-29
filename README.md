@@ -28,12 +28,12 @@
 
 Python dependencies are declared by the package and installed automatically when using `pip`:
 
+- [`yt-dlp`](https://github.com/yt-dlp/yt-dlp)
 - [`ytmusicapi`](https://github.com/sigma67/ytmusicapi)
 - [`mutagen`](https://github.com/quodlibet/mutagen)
 
 The following command-line tools must be installed separately and available through `PATH`:
 
-- [`yt-dlp`](https://github.com/yt-dlp/yt-dlp)
 - [`ffmpeg`](https://ffmpeg.org/)
 - [`chafa`](https://github.com/hpjansson/chafa)
 
@@ -103,13 +103,13 @@ py -m pip install --upgrade pip
 1. Install:
 
 ```powershell
-py -m pip install path\to\smytm-x.x-py3-none-any.whl
+py -m pip install .\path\to\smytm-x.x-py3-none-any.whl
 ```
 
 2. Install requirements:
 
 ```sh
-winget install yt-dlp.yt-dlp BtbN.FFmpeg.GPL hpjansson.Chafa wez.atomicparsley -e --accept-source-agreements --accept-package-agreements   
+winget install BtbN.FFmpeg.GPL hpjansson.Chafa wez.atomicparsley -e --accept-source-agreements --accept-package-agreements
 ```
 
 This installs `yt-dlp`, `ffmpeg`, `chafa` and `AtomicParsley`.
@@ -122,7 +122,7 @@ This installs `yt-dlp`, `ffmpeg`, `chafa` and `AtomicParsley`.
 - Extract it anywhere.
 - Open your environment variables' settings (you can search for it in the windows search bar).
 - In the **System variables** section, select the `Path` or `PATH`, then click Edit.
-- Now click **New**, then **Browse**, then select the extracted rsgain's folder where the `rsgain.exe` is located.
+- Now click **New**, then **Browse**, then select the extracted `rsgain-x.x-win64` folder where the `rsgain.exe` is located.
 
 # 📦 Build by yourself
 

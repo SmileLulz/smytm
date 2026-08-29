@@ -1,5 +1,5 @@
 Name:    smytm
-Version:        1.3.b2
+Version:        1.3.b3
 Release: 1%{?dist}
 Summary: CLI utility for searching and downloading music from YouTube and YouTube Music
 
@@ -56,6 +56,6 @@ appstreamcli validate \
 %{_metainfodir}/io.github.SmileLulz.smytm.metainfo.xml
 
 %changelog
-* Sat Aug 29 2026 SmileLulz - 1.3.b2-1
-- Fixing Fedora spec
+* Sat Aug 29 2026 SmileLulz - 1.3.b3-1
+- Made `yt-dlp` a python dependency rather than system's
 - Testing Windows build

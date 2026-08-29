@@ -1,5 +1,10 @@
 # Changelogs
 
+### v1.3.b3
+
+- Made `yt-dlp` a python dependency rather than system's
+- Testing Windows build
+
 ### v1.3.b2
 
 - Fixing Fedora spec
