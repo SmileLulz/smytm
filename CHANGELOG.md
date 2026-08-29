@@ -1,5 +1,9 @@
 # Changelogs
 
+### v1.5
+
+- Added full help message while also keeping the individual ones
+
 ### v1.4
 
 - Added `-v, --version`
