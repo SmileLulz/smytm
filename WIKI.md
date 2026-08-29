@@ -28,6 +28,8 @@ smytm search never gonna give you up --tsize 32 # 32x32 pixel
 > Uses YouTube video ID.
 >
 > Always put the ID at the end. Example structure: `smytm [OPTIONS] <ID>`
+>
+> `smytm` handles IDs beginning with `-` automatically; users do not need to type `--`.
 
 Download normally:
 
@@ -107,14 +109,33 @@ smytm --help
 
 # ✨ Configuration
 
-Config lives at `~/.config/smytm/config.json`:
+**Config location:**
 
-| Key                  | Default   | Description                                                             |
-| -------------------  | --------- | ----------------------------------------------------------------------- |
-| `output_dir`         | `~/Music` | Where downloaded files are saved                                        |
-| `format`             | `"opus"`  | Default audio format (can be overridden with `-f`/`--format`)           |
-| `audio_quality`      | `"0"`     | yt-dlp audio quality (`0` = best, `9` = worst)                          |
-| `artist_in_filename` | `true`    | Includes ` - Artist Name` in the end of the filename                    |
-| `replaygain_always`  | `false`   | Always apply ReplayGain tags, without needing `-rg`/`--replaygain`      |
-| `thumbnail_size`     | `"16"`    | Default thumbnail preview size (can be overridden with `-ts`/`--tsize`) |
-| `nerd_font_icons`    | `true`    | Show Nerd Font icons in output; set `false` for plain text              |
+- Linux: `$XDG_CONFIG_HOME/smytm/config.json`, or `~/.config/smytm/config.json` when `XDG_CONFIG_HOME` is not set
+- Windows: `%APPDATA%\\smytm\\config.json`
+
+| Key                  | Default   | Description                                                                 |
+| -------------------  | --------- | --------------------------------------------------------------------------- |
+| `output_dir`         | `~/Music` | Where downloaded files are saved                                            |
+| `format`             | `"opus"`  | Default audio format (can be overridden with `-f`/`--format`)               |
+| `audio_quality`      | `"0"`     | yt-dlp audio quality (`0` = best, `9` = worst)                              |
+| `artist_in_filename` | `true`    | Includes ` - Artist Name` in the end of the filename                        |
+| `replaygain_always`  | `false`   | Always apply ReplayGain tags, without needing `-rg`/`--replaygain`          |
+| `lyrics_always`      | `false`   | Always download synchronized `.lrc` files, without needing `-ly`/`--lyrics` |
+| `thumbnail_size`     | `"16"`    | Default thumbnail preview size (can be overridden with `-ts`/`--tsize`)     |
+| `nerd_font_icons`    | `true`    | Show Nerd Font icons in output; set `false` for plain text                  |
+
+**Linux config example:**
+
+```sh
+{
+    "output_dir": "/home/smilelulz/Music",
+    "format": "opus",
+    "audio_quality": "0",
+    "artist_in_filename": true,
+    "replaygain_always": false,
+    "lyrics_always": true,
+    "thumbnail_size": "16",
+    "nerd_font_icons": true
+}
+```

@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from . import icons
+from . import utils
 
 LRCLIB_API = "https://lrclib.net/api/get"
 LRCLIB_USER_AGENT = (
@@ -167,10 +168,14 @@ def _fetch_from_ytmusic(
 
 def _get_ytdlp_metadata(video_id: str) -> dict[str, Any]:
     """Get fallback track metadata from yt-dlp when YouTube Music is unavailable."""
+    ytdlp = utils.find_tool("yt-dlp", "yt-dlp.exe")
+    if ytdlp is None:
+        return {}
+
     try:
         result = subprocess.run(
             [
-                "yt-dlp",
+                ytdlp,
                 "--skip-download",
                 "--no-playlist",
                 "--print",

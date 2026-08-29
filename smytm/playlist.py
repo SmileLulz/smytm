@@ -21,8 +21,13 @@ def get_playlist_entries(playlist_id):
     else:
         url = f"https://www.youtube.com/playlist?list={playlist_id}"
 
+    ytdlp = utils.find_tool("yt-dlp", "yt-dlp.exe")
+    if ytdlp is None:
+        print("yt-dlp is not installed.", file=sys.stderr)
+        return []
+
     cmd = [
-        "yt-dlp",
+        ytdlp,
         "--flat-playlist",
         "--print", "%(id)s\t%(title)s",
         "--no-warnings",

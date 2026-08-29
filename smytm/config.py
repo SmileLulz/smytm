@@ -1,18 +1,35 @@
 """Configuration handling for smytm."""
 
 import json
+import os
 import sys
 from pathlib import Path
 
-CONFIG_DIR = Path.home() / ".config" / "smytm"
+if sys.platform.startswith("win"):
+    _config_root = Path(
+        os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming")
+    )
+    _cache_root = Path(
+        os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local")
+    )
+else:
+    _config_root = Path(
+        os.environ.get("XDG_CONFIG_HOME") or (Path.home() / ".config")
+    )
+    _cache_root = Path(
+        os.environ.get("XDG_CACHE_HOME") or (Path.home() / ".cache")
+    )
+
+CONFIG_DIR = _config_root / "smytm"
 CONFIG_FILE = CONFIG_DIR / "config.json"
+CACHE_DIR = _cache_root / "smytm"
 
 DEFAULT_CONFIG = {
     "output_dir": str(Path.home() / "Music"),
     "format": "opus",
     "audio_quality": "0",
     "artist_in_filename": True,
-    "replaygain_always": False,
+    "replaygain_always": True,
     "lyrics_always": False,
     "thumbnail_size": "16",
     "nerd_font_icons": True,

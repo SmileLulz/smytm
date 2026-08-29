@@ -8,6 +8,7 @@ CHANGELOG="CHANGELOG.md"
 SPEC="rpm/SPECS/smytm.spec"
 
 PKGBUILD_MAINTAINER="SmileLulz <SmileLulz@users.noreply.github.com>"
+CHANGELOG_MAINTAINER="SmileLulz <SmileLulz@users.noreply.github.com>"
 SPEC_PACKAGER="SmileLulz"
 
 RED='\033[0;31m'
@@ -86,6 +87,50 @@ for entry in entries:
 PY
 }
 
+get_changelog_entries() {
+    local version="$1"
+
+    python3 - "$CHANGELOG" "$version" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+changelog_path = Path(sys.argv[1])
+version = sys.argv[2]
+
+text = changelog_path.read_text(encoding="utf-8")
+
+pattern = (
+    rf"^###\s+v{re.escape(version)}\s*\n"
+    rf"(.*?)(?=^###\s+v|\Z)"
+)
+
+match = re.search(
+    pattern,
+    text,
+    re.MULTILINE | re.DOTALL,
+)
+
+if not match:
+    raise SystemExit(
+        f"Error: CHANGELOG.md does not contain '### v{version}'."
+    )
+
+entries = [
+    line.strip()
+    for line in match.group(1).splitlines()
+    if line.strip().startswith("- ")
+]
+
+if not entries:
+    raise SystemExit(
+        f"Error: '### v{version}' contains no changelog entries."
+    )
+
+print("\n".join(entries))
+PY
+}
+
 bump_version() {
     local current="$1"
     local type="$2"
@@ -116,42 +161,12 @@ bump_version() {
     esac
 }
 
-update_files() {
+update_fedora_changelog() {
     local new_version="$1"
-    local current_pkgname
     local fedora_date
 
-    current_pkgname=$(get_pkgname)
     fedora_date=$(date '+%a %b %d %Y')
 
-    if [[ "$current_pkgname" != "smytm" ]]; then
-        echo -e "${RED}Error: PKGBUILD contains unexpected pkgname: '${current_pkgname}'${NC}" >&2
-        echo -e "${RED}Expected: smytm${NC}" >&2
-        exit 1
-    fi
-
-    # pyproject.toml
-    sed -i \
-        "s/^version = \".*\"/version = \"${new_version}\"/" \
-        "$PYPROJECT"
-
-    # Arch PKGBUILD
-    sed -i \
-        "s/^pkgver=.*/pkgver=${new_version}/" \
-        "$PKGBUILD"
-
-    if grep -q '^# Maintainer:' "$PKGBUILD"; then
-        sed -i \
-            "s/^# Maintainer:.*/# Maintainer: ${PKGBUILD_MAINTAINER}/" \
-            "$PKGBUILD"
-    fi
-
-    # Fedora spec
-    sed -i \
-        "s/^Version:.*/Version:        ${new_version}/" \
-        "$SPEC"
-
-    # Fedora changelog
     python3 - "$SPEC" "$CHANGELOG" "$new_version" "$fedora_date" "$SPEC_PACKAGER" <<'PY'
 import re
 import sys
@@ -220,6 +235,43 @@ print(f"Using changelog: v{version}")
 for entry in entries:
     print(entry)
 PY
+}
+
+update_files() {
+    local new_version="$1"
+    local current_pkgname
+
+    current_pkgname=$(get_pkgname)
+
+    if [[ "$current_pkgname" != "smytm" ]]; then
+        echo -e "${RED}Error: PKGBUILD contains unexpected pkgname: '${current_pkgname}'${NC}" >&2
+        echo -e "${RED}Expected: smytm${NC}" >&2
+        exit 1
+    fi
+
+    # pyproject.toml
+    sed -i \
+        "s/^version = \".*\"/version = \"${new_version}\"/" \
+        "$PYPROJECT"
+
+    # Arch PKGBUILD
+    sed -i \
+        "s/^pkgver=.*/pkgver=${new_version}/" \
+        "$PKGBUILD"
+
+    if grep -q '^# Maintainer:' "$PKGBUILD"; then
+        sed -i \
+            "s/^# Maintainer:.*/# Maintainer: ${PKGBUILD_MAINTAINER}/" \
+            "$PKGBUILD"
+    fi
+
+    # Fedora spec
+    sed -i \
+        "s/^Version:.*/Version:        ${new_version}/" \
+        "$SPEC"
+
+    # Fedora changelog
+    update_fedora_changelog "$new_version"
 
     echo -e "${GREEN}✓ Updated pyproject.toml${NC}"
     echo -e "${GREEN}✓ Updated PKGBUILD${NC}"
@@ -230,7 +282,12 @@ if [[ $# -lt 1 ]]; then
     usage
 fi
 
-for file in "$PYPROJECT" "$PKGBUILD" "$CHANGELOG" "$SPEC"; do
+for file in \
+    "$PYPROJECT" \
+    "$PKGBUILD" \
+    "$CHANGELOG" \
+    "$SPEC"
+do
     if [[ ! -f "$file" ]]; then
         echo -e "${RED}Error: Required file not found: $file${NC}" >&2
         exit 1

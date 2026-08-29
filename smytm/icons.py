@@ -1,4 +1,4 @@
-"""Optional Nerd Font icon handling for ytmgrab.
+"""Optional Nerd Font icon handling for smytm.
 
 Icons are referenced throughout the codebase by short, semantic string
 keys (e.g. "warning", "error", "success") instead of raw glyphs. Whether
@@ -8,7 +8,6 @@ toggle, so the tool looks clean on terminals without a Nerd Font too.
 
 from . import config
 
-# Nerd Font glyphs, keyed by semantic name
 ICONS = {
     "download": "\uf019",       # nf-fa-download
     "video": "\uf44c",          # nf-oct-device_camera_video

@@ -1,5 +1,11 @@
 # Changelogs
 
+### v1.3.b1
+
+- Made `replaygain_always` `true` by default
+- Testing Windows build
+- Did many changes for Windows build support
+
 ### v1.2
 
 - Added synchronized lyrics downloads; as `.lrc` sidecar files

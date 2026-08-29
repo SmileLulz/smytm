@@ -35,8 +35,12 @@ def download_single(
         print(f"{icons.icon('error')}{exc}", file=sys.stderr)
         return False, None
 
+    ytdlp = utils.find_tool("yt-dlp", "yt-dlp.exe")
+    if ytdlp is None:
+        return False, None
+
     info_cmd = [
-        "yt-dlp",
+        ytdlp,
         "--print", "%(title)s\t%(artist)s\t%(uploader)s",
         "--no-playlist",
         "--",
@@ -65,7 +69,7 @@ def download_single(
     )
 
     cmd = [
-        "yt-dlp",
+        ytdlp,
         "--no-playlist",
         "--extract-audio",
         "--audio-format", audio_format,

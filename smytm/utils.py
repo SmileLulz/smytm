@@ -7,9 +7,13 @@ import subprocess
 import sys
 from pathlib import Path
 
+from . import config
 from . import icons
 
-CACHE_DIR = Path.home() / ".cache" / "smytm"
+CONFIG_DIR = config.CONFIG_DIR
+CONFIG_FILE = config.CONFIG_FILE
+CACHE_DIR = config.CACHE_DIR
+
 ALLOWED_AUDIO_FORMATS = {
     "aac",
     "alac",
@@ -22,33 +26,40 @@ ALLOWED_AUDIO_FORMATS = {
 }
 
 
+def find_tool(*names):
+    """Return the first matching external executable from PATH."""
+    for name in names:
+        path = shutil.which(name)
+        if path:
+            return path
+    return None
+
+
 def check_dependencies():
     """Check required tools and warn about optional/helper dependencies."""
     missing = []
 
-    for tool in ("yt-dlp", "ffmpeg"):
-        if shutil.which(tool) is None:
-            missing.append(tool)
-    
-    for package in ["mutagen"]:
-        if importlib.util.find_spec(package) is None:
-            missing.append(f"python-{package}")
+    for tool_names in (
+        ("yt-dlp", "yt-dlp.exe"),
+        ("ffmpeg", "ffmpeg.exe"),
+    ):
+        if find_tool(*tool_names) is None:
+            missing.append(tool_names[0])
+
+    if importlib.util.find_spec("mutagen") is None:
+        missing.append("python-mutagen")
 
     warnings = []
 
-    # if importlib.util.find_spec("mutagen") is None:
-    #     warnings.append(
-    #         "'python-mutagen' not found. Some yt-dlp metadata/thumbnail features may be unavailable."
-    #     )
+    if find_tool("AtomicParsley", "atomicparsley", "AtomicParsley.exe") is None:
+        warnings.append(
+            "'AtomicParsley' not found. M4A thumbnail embedding may fail."
+        )
 
-    if (
-        shutil.which("AtomicParsley") is None
-        and shutil.which("atomicparsley") is None
-    ):
-        warnings.append("'atomicparsley' not found. M4A thumbnail embedding may fail.")
-
-    if shutil.which("rsgain") is None:
-        warnings.append("'rsgain' not found. ReplayGain tagging will be skipped.")
+    if find_tool("rsgain", "rsgain.exe") is None:
+        warnings.append(
+            "'rsgain' not found. ReplayGain tagging will be skipped."
+        )
 
     if warnings:
         print(f"{icons.icon('warning')}Warnings:")
@@ -76,9 +87,23 @@ def ensure_cache_dir():
 
 def sanitize_filename(name):
     """Sanitize a YouTube-derived filename for safe filesystem use."""
-    sanitized = re.sub(r'[\\/*?:"<>|\x00-\x1f\x7f]', "_", name)
+    sanitized = re.sub(r'[\\/*?:"<>|\x00-\x1f\x7f]', "_", str(name))
     sanitized = sanitized.strip(" .")
-    return sanitized or "Unknown"
+
+    if not sanitized:
+        return "Unknown"
+
+    if sys.platform.startswith("win"):
+        stem = sanitized.split(".", 1)[0].upper()
+        reserved = {
+            "CON", "PRN", "AUX", "NUL",
+            *(f"COM{i}" for i in range(1, 10)),
+            *(f"LPT{i}" for i in range(1, 10)),
+        }
+        if stem in reserved:
+            sanitized = f"_{sanitized}"
+
+    return sanitized
 
 
 def validate_audio_format(audio_format):
@@ -86,7 +111,9 @@ def validate_audio_format(audio_format):
     normalized = str(audio_format).strip().lower()
     if normalized not in ALLOWED_AUDIO_FORMATS:
         supported = ", ".join(sorted(ALLOWED_AUDIO_FORMATS))
-        raise ValueError(f"unsupported audio format '{audio_format}'; use one of: {supported}")
+        raise ValueError(
+            f"unsupported audio format '{audio_format}'; use one of: {supported}"
+        )
     return normalized
 
 
@@ -110,18 +137,23 @@ def get_incremented_filename(output_dir, title, ext):
 
 def apply_replaygain(file_path, audio_format):
     """Apply ReplayGain tags using the external rsgain tool."""
-    if shutil.which("rsgain") is None:
+    rsgain = find_tool("rsgain", "rsgain.exe")
+    if rsgain is None:
         return False
 
-    cmd = ["rsgain", "custom", "-s", "i"]
+    cmd = [rsgain, "custom", "-s", "i"]
     if audio_format == "opus":
         cmd.extend(["-o", "r"])
     cmd.append(str(file_path))
 
     print(f"{icons.icon('replaygain')}Applying ReplayGain tags...\n")
     try:
-        result = subprocess.run(cmd, check=False)
-    except OSError as exc:
+        result = subprocess.run(
+            cmd,
+            check=False,
+            timeout=300,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
         print(f"{icons.icon('error')}Unable to run rsgain: {exc}")
         return False
 

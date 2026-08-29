@@ -116,6 +116,10 @@ def main():
         "-inv", "--inverse", action="store_true",
         help="Download videos in reverse order",
     )
+    playlist_parser.add_argument(
+        "-ly", "--lyrics", action="store_true",
+        help="Download synchronized lyrics as an '.lrc' sidecar file",
+    )
 
     search_parser = subparsers.add_parser(
         "search",

@@ -1,24 +1,28 @@
 """Search for songs on YouTube Music."""
 
 import importlib.util
-import shutil
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
+import urllib.error
+import urllib.request
 
 from . import config
 from . import icons
+from . import utils
 
 SUBPROCESS_TIMEOUT = 30
+NETWORK_TIMEOUT = 20
 
 
 def check_search_dependencies():
-    """Check if external tools and packages for search are available."""
+    """Check packages and external tools required for search."""
     missing = []
 
-    for command in ("curl", "chafa"):
-        if shutil.which(command) is None:
-            missing.append(command)
+    if utils.find_tool("chafa", "chafa.exe") is None:
+        missing.append("chafa")
+
     if importlib.util.find_spec("ytmusicapi") is None:
         missing.append("python-ytmusicapi")
 
@@ -32,36 +36,31 @@ def check_search_dependencies():
 
 
 def _download_thumbnail(url, path):
-    """Download one HTTPS thumbnail with a bounded network operation."""
+    """Download one HTTPS thumbnail using Python's standard HTTPS stack."""
     if not isinstance(url, str) or not url.lower().startswith("https://"):
         return False
 
+    request = urllib.request.Request(
+        url,
+        headers={"User-Agent": "smytm/1.2"},
+    )
+
     try:
-        result = subprocess.run(
-            [
-                "curl",
-                "--fail",
-                "--silent",
-                "--show-error",
-                "--location",
-                "--connect-timeout", "5",
-                "--max-time", "20",
-                "--output", str(path),
-                url,
-            ],
-            check=False,
-            capture_output=True,
-            timeout=SUBPROCESS_TIMEOUT,
-        )
-    except (OSError, subprocess.TimeoutExpired):
+        with urllib.request.urlopen(request, timeout=NETWORK_TIMEOUT) as response:
+            with open(path, "wb") as output:
+                output.write(response.read())
+    except (urllib.error.URLError, TimeoutError, OSError):
         return False
-    return result.returncode == 0
+
+    return True
 
 
 def run(args):
     """Execute the search subcommand."""
     if not check_search_dependencies():
         sys.exit(1)
+
+    chafa = utils.find_tool("chafa", "chafa.exe")
 
     from ytmusicapi import YTMusic
 
@@ -107,14 +106,21 @@ def run(args):
         print()
 
         if thumb:
-            with tempfile.NamedTemporaryFile() as tmp:
-                if _download_thumbnail(thumb, tmp.name):
+            tmp_path = None
+            try:
+                with tempfile.NamedTemporaryFile(
+                    suffix=".img",
+                    delete=False,
+                ) as tmp:
+                    tmp_path = tmp.name
+
+                if _download_thumbnail(thumb, tmp_path):
                     try:
                         preview = subprocess.run(
                             [
-                                "chafa",
+                                chafa,
                                 f"--size={thumbnail_size}x{thumbnail_size}",
-                                tmp.name,
+                                tmp_path,
                             ],
                             check=False,
                             timeout=SUBPROCESS_TIMEOUT,
@@ -125,6 +131,12 @@ def run(args):
                         print("[Thumbnail preview unavailable]")
                 else:
                     print("[Thumbnail unavailable]")
+            finally:
+                if tmp_path:
+                    try:
+                        Path(tmp_path).unlink(missing_ok=True)
+                    except OSError:
+                        pass
         else:
             print("[Thumbnail unavailable]")
 

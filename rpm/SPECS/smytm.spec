@@ -1,5 +1,5 @@
 Name:    smytm
-Version:        1.2
+Version:        1.3.b1
 Release: 1%{?dist}
 Summary: CLI utility for searching and downloading music from YouTube and YouTube Music
 
@@ -17,10 +17,9 @@ Requires: python3-ytmusicapi
 Requires: python3-mutagen
 Requires: yt-dlp
 Requires: ffmpeg
-Requires: curl
 Requires: chafa
-Requires: AtomicParsley
-Requires: rsgain
+Recommends: AtomicParsley
+Recommends: rsgain
 
 %generate_buildrequires
 %pyproject_buildrequires
@@ -57,7 +56,7 @@ appstreamcli validate \
 %{_metainfodir}/io.github.SmileLulz.smytm.metainfo.xml
 
 %changelog
-* Thu Aug 27 2026 SmileLulz - 1.2-1
-- Added synchronized lyrics downloads; as `.lrc` sidecar files
-- Added `lyrics_always` in config; `false` by default
-- Fixed `--help` command not working
+* Sat Aug 29 2026 SmileLulz - 1.3.b1-1
+- Made `replaygain_always` `true` by default
+- Testing Windows build
+- Did many changes for Windows build support
