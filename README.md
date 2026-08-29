@@ -126,13 +126,17 @@ This installs `yt-dlp`, `ffmpeg`, `chafa` and `AtomicParsley`.
 
 `AtomicParsley` is optional, but required for `M4A`'s thumbnail embedding. If you don't want `AtomicParsley`, just remove it from the line (`  wez.atomicparsley`).
 
-3. To install `rsgain`, you must do it manually:
+3. Then just restart your terminal to make sure the commands be available.
+
+4. To install `rsgain`, you must do it manually:
 
 - Go to their official repository's [Release](https://github.com/complexlogic/rsgain/releases) page and download the windows zip file.
 - Extract it anywhere.
 - Open your environment variables' settings (you can search for it in the windows search bar).
 - In the **System variables** section, select the `Path` or `PATH`, then click Edit.
 - Now click **New**, then **Browse**, then select the extracted `rsgain-x.x-win64` folder where the `rsgain.exe` is located.
+
+`rsgain` is optional, but required for ReplayGain (2.0) tagging.
 
 # 📦 Build by yourself
 
