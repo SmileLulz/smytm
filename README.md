@@ -61,6 +61,9 @@ _Make sure you have installed **python 3.10** or higher._
 Download the latest `.whl` file from the [Releases](https://github.com/SmileLulz/smytm/releases) page.
 
 ```sh
+# Update
+python -m pip install --upgrade pip
+
 # Install
 pip install /path/to/smytm-x.x-py3-none-any.whl
 
@@ -68,7 +71,11 @@ pip install /path/to/smytm-x.x-py3-none-any.whl
 pip install --user /path/to/smytm-x.x-py3-none-any.whl
 ```
 
-Then install the required command-line tools using your distribution's package manager.
+Then install the required command-line tools using your distribution's package manager:
+
+Arch: `ffmpeg`, `chafa`, `atomicparsley` (optional), `rsgain` (optional)
+
+Fedora: `ffmpeg`, `chafa`, `AtomicParsley` (optional), `rsgain` (optional)
 
 ## Linux (Arch & Fedora)
 
