@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "smytm"
-version = "1.5"
+version = "1.6"
 description = "CLI utility for searching and downloading music or audio from YouTube and YouTube Music."
 readme = "README.md"
 requires-python = ">=3.10"

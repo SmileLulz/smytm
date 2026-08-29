@@ -79,7 +79,8 @@ def run(args):
 
     apply_replaygain = args.replaygain or cfg.get("replaygain_always", False)
     download_lyrics = args.lyrics or cfg.get("lyrics_always", False)
-    include_artist = cfg.get("artist_in_filename", True)
+    skip_existing = args.skip or cfg.get("skip_always", False)
+    include_artist = bool(cfg.get("artist_in_filename", True))
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -117,24 +118,29 @@ def run(args):
             print(f"\n[{idx}/{len(entries)}] {icons.icon('download')} Downloading: {title}")
             print(f"   ID: {video_id}")
 
-            success, output_path = download.download_by_id(
+            success, output_path, skipped = download.download_by_id(
                 video_id,
                 output_dir,
                 audio_format,
                 audio_quality,
-                include_artist
+                include_artist,
+                skip_existing,
             )
 
             if success:
                 success_count += 1
-                if download_lyrics and output_path:
-                    print()
-                    from . import lyrics
-                    lyrics.write_lrc(output_path, video_id)
 
-                if apply_replaygain and output_path:
-                    print()
-                    utils.apply_replaygain(output_path, audio_format)
+                if skipped:
+                    print(f"{icons.icon('success')} Skipped: file already exists.")
+                else:
+                    if download_lyrics and output_path:
+                        print()
+                        from . import lyrics
+                        lyrics.write_lrc(output_path, video_id)
+
+                    if apply_replaygain and output_path:
+                        print()
+                        utils.apply_replaygain(output_path, audio_format)
             else:
                 fail_count += 1
                 log_file.write(f"{video_id}\t{title}\n")

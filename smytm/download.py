@@ -26,9 +26,19 @@ def _run(command, **kwargs):
 
 
 def download_single(
-    url, output_dir, audio_format, audio_quality, video_id, include_artist=True
+    url,
+    output_dir,
+    audio_format,
+    audio_quality,
+    video_id,
+    include_artist=True,
+    skip_existing=False,
 ):
-    """Download audio from a given URL, return (success, output_path)."""
+    """Download audio from a given URL.
+
+    Returns:
+        tuple[bool, Path | None, bool]: success, output path, skipped.
+    """
     try:
         audio_format = utils.validate_audio_format(audio_format)
     except ValueError as exc:
@@ -64,6 +74,12 @@ def download_single(
     else:
         base_name = utils.sanitize_filename(title)
 
+    expected_path = Path(output_dir) / f"{base_name}.{audio_format}"
+
+    if skip_existing and expected_path.exists():
+        print(f"{icons.icon('fallback')} File already exists, skipping: {expected_path}")
+        return True, expected_path, True
+
     output_path = utils.get_incremented_filename(
         output_dir, base_name, audio_format
     )
@@ -88,11 +104,23 @@ def download_single(
 
     result = _run(cmd)
     success = result is not None and result.returncode == 0
-    return success, output_path if success else None
+    return success, output_path if success else None, False
 
 
-def download_by_id(video_id, output_dir, audio_format, audio_quality, include_artist=True):
-    """Download a single video ID, preferring music.youtube.com."""
+def download_by_id(
+    video_id,
+    output_dir,
+    audio_format,
+    audio_quality,
+    include_artist=True,
+    skip_existing=False,
+    force_youtube=False,
+):
+    """Download a single video ID.
+
+    By default, try YouTube Music first and fall back to YouTube.
+    When force_youtube is True, use youtube.com directly with no fallback.
+    """
     if not utils.validate_video_id(video_id):
         print(f"Invalid video ID: {video_id}")
         return False, None
@@ -100,21 +128,45 @@ def download_by_id(video_id, output_dir, audio_format, audio_quality, include_ar
     music_url = f"https://music.youtube.com/watch?v={video_id}"
     youtube_url = f"https://www.youtube.com/watch?v={video_id}"
 
+    if force_youtube:
+        print(f"{icons.icon('music')} Using youtube.com...")
+        return download_single(
+            youtube_url,
+            output_dir,
+            audio_format,
+            audio_quality,
+            video_id,
+            include_artist,
+            skip_existing,
+        )
+
     print(f"{icons.icon('music')} Trying music.youtube.com...")
-    success, output_path = download_single(
-        music_url, output_dir, audio_format, audio_quality, video_id, include_artist
+    success, output_path, skipped = download_single(
+        music_url,
+        output_dir,
+        audio_format,
+        audio_quality,
+        video_id,
+        include_artist,
+        skip_existing,
     )
 
-    if not success:
-        print(
-            f"\n{icons.icon('fallback')} Music domain failed, "
-            "falling back to youtube.com..."
-        )
-        success, output_path = download_single(
-            youtube_url, output_dir, audio_format, audio_quality, video_id, include_artist
-        )
+    if success:
+        return success, output_path, skipped
 
-    return success, output_path
+    print(
+        f"\n{icons.icon('fallback')} Music domain failed, "
+        "falling back to youtube.com..."
+    )
+    return download_single(
+        youtube_url,
+        output_dir,
+        audio_format,
+        audio_quality,
+        video_id,
+        include_artist,
+        skip_existing,
+    )
 
 
 def run(args):
@@ -139,6 +191,7 @@ def run(args):
 
     apply_replaygain = args.replaygain or cfg.get("replaygain_always", False)
     download_lyrics = args.lyrics or cfg.get("lyrics_always", False)
+    skip_existing = args.skip or cfg.get("skip_always", False)
     include_artist = bool(cfg.get("artist_in_filename", True))
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -150,18 +203,28 @@ def run(args):
     print(f"{icons.icon('output')} Output   : {output_dir}")
     print()
 
-    success, output_path = download_by_id(
-        args.video_id, output_dir, audio_format, audio_quality, include_artist
+    success, output_path, skipped = download_by_id(
+        args.video_id,
+        output_dir,
+        audio_format,
+        audio_quality,
+        include_artist,
+        skip_existing,
+        args.youtube,
     )
 
     if success:
-        print(f"\n{icons.icon('success')} Download successful!")
-        if download_lyrics and output_path:
+        if skipped:
+            print(f"\n{icons.icon('success')} Download skipped!")
+        else:
+            print(f"\n{icons.icon('success')} Download successful!")
+
+        if not skipped and download_lyrics and output_path:
             print()
             from . import lyrics
             lyrics.write_lrc(output_path, args.video_id)
 
-        if apply_replaygain and output_path:
+        if not skipped and apply_replaygain and output_path:
             print()
             utils.apply_replaygain(output_path, audio_format)
     else:

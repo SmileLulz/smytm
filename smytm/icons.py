@@ -9,18 +9,18 @@ toggle, so the tool looks clean on terminals without a Nerd Font too.
 from . import config
 
 ICONS = {
-    "download": "\uf019",       # nf-fa-download
-    "video": "\uf44c",          # nf-oct-device_camera_video
-    "format": "\U000f0f04",     # nf-md-file_music
-    "output": "\U000f024d",     # nf-md-folder_outline
-    "music": "\U000f0339",      # nf-md-youtube
-    "fallback": "\U000f033a",   # nf-md-youtube_studio (fallback attempt)
-    "success": "\uf00c",        # nf-fa-check
-    "error": "\uf468",          # nf-oct-x_circle
-    "title": "\U000f075a",      # nf-md-music_note
-    "artist": "\U000f0004",     # nf-md-account_music
-    "warning": "\uf071",        # nf-fa-warning
-    "replaygain": "\U000f057e", # nf-md-volume_high
+    "download": "",
+    "video": "",
+    "format": "",
+    "output": "󰉍",
+    "music": "󰝚",
+    "fallback": "",
+    "success": "",
+    "error": "",
+    "title": "󰝚",
+    "artist": "󰀄",
+    "warning": "",
+    "replaygain": "󰕾",
 }
 
 _enabled = None

@@ -37,6 +37,18 @@ Download normally:
 smytm download lYBUbBu4W08
 ```
 
+Skip the download if it already exists:
+
+```sh
+smytm download --skip lYBUbBu4W08
+```
+
+Force-use YouTube instead of YouTube Music:
+
+```sh
+smytm download --youtube lYBUbBu4W08
+```
+
 Override the format:
 
 ```sh
@@ -74,6 +86,12 @@ Download normally:
 smytm playlist PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC
 ```
 
+Skip tracks that already exists:
+
+```sh
+smytm playlist --skip PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC
+```
+
 Override the download order:
 
 ```sh
@@ -106,6 +124,24 @@ Show help message:
 smytm --help
 ```
 
+Show download help message:
+
+```sh
+smytm download --help
+```
+
+Show playlist help message:
+
+```sh
+smytm playlist --help
+```
+
+Show search help message:
+
+```sh
+smytm search --help
+```
+
 
 # ✨ Configuration
 
@@ -120,8 +156,9 @@ smytm --help
 | `format`             | `"opus"`  | Default audio format (can be overridden with `-f`/`--format`)               |
 | `audio_quality`      | `"0"`     | yt-dlp audio quality (`0` = best, `9` = worst)                              |
 | `artist_in_filename` | `true`    | Includes ` - Artist Name` in the end of the filename                        |
-| `replaygain_always`  | `false`   | Always apply ReplayGain tags, without needing `-rg`/`--replaygain`          |
+| `replaygain_always`  | `true`    | Always apply ReplayGain tags, without needing `-rg`/`--replaygain`          |
 | `lyrics_always`      | `false`   | Always download synchronized `.lrc` files, without needing `-ly`/`--lyrics` |
+| `skip_always`        | `false`   | Always skip downloads when the output filename already exists               |
 | `thumbnail_size`     | `"16"`    | Default thumbnail preview size (can be overridden with `-ts`/`--tsize`)     |
 | `nerd_font_icons`    | `true`    | Show Nerd Font icons in output; set `false` for plain text                  |
 
@@ -135,6 +172,7 @@ smytm --help
     "artist_in_filename": true,
     "replaygain_always": false,
     "lyrics_always": true,
+    "skip_always": false,
     "thumbnail_size": "16",
     "nerd_font_icons": true
 }
@@ -150,6 +188,7 @@ smytm --help
     "artist_in_filename": true,
     "replaygain_always": true,
     "lyrics_always": false,
+    "skip_always": false,
     "thumbnail_size": "16",
     "nerd_font_icons": true
 }

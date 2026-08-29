@@ -1,5 +1,13 @@
 # Changelogs
 
+### v1.6
+
+- Reverted the help message to compact version
+- Changed some icon glyphs, and now using direct glyph copy instead of code
+- Added `-yt, --youtube` for single downloads to force-use YouTube instead of YouTube Music
+- Added `-s, --skip` for skipping the downloads that are already present
+- Added `skip_always` in config, `false` by default
+
 ### v1.5
 
 - Added full help message while also keeping the individual ones

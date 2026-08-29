@@ -57,6 +57,10 @@ def _normalize_leading_hyphen_id(argv):
         "--replaygain",
         "-ly",
         "--lyrics",
+        "-s",
+        "--skip",
+        "-yt",
+        "--youtube",
         "-inv",
         "--inverse",
         "-h",
@@ -94,73 +98,22 @@ def _normalize_leading_hyphen_id(argv):
     return argv
 
 
-def _add_detailed_help(parser, download_parser, playlist_parser, search_parser):
-    """Add detailed subcommand usage to the top-level help."""
-    parser.epilog = f"""
-Examples:
-  smytm download [OPTIONS] <ID>
-  smytm playlist [OPTIONS] <ID>
-  smytm search [OPTIONS] <QUERY>
-
-Download options:
-{download_parser.format_help().rstrip()}
-
-Playlist options:
-{playlist_parser.format_help().rstrip()}
-
-Search options:
-{search_parser.format_help().rstrip()}
-"""
-
-
 def main():
-    current_version = version("smytm")
-
     parser = argparse.ArgumentParser(
         prog="smytm",
-        description=(
-            "Search or download music and audio from "
-            "YouTube / YouTube Music."
-        ),
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
-
-    parser.add_argument(
-        "-v",
-        "--version",
-        action="version",
-        version=f"smytm {current_version}",
-    )
-    parser.add_argument(
-        "-gc",
-        "--gen-config",
-        action="store_true",
-        help="Generate default config",
-    )
-    parser.add_argument(
-        "-sc",
-        "--show-config",
-        action="store_true",
-        help="Show current config",
+        description="Search or download music and audio from YouTube / YouTube Music.",
     )
 
     subparsers = parser.add_subparsers(
         dest="command",
-        required=True,
-        title="subcommands",
-        metavar="{download,d,playlist,p,search,s}",
-        description=(
-            "Use one of the subcommands below. "
-            "Run '<subcommand> --help' for focused help."
-        ),
+        required=False,
+        help="Subcommand",
     )
 
     download_parser = subparsers.add_parser(
         "download",
         aliases=["d"],
         help="Download an audio by YouTube video ID",
-        description="Download an audio by YouTube video ID.",
-        formatter_class=argparse.RawTextHelpFormatter,
     )
     download_parser.add_argument(
         "video_id",
@@ -189,13 +142,23 @@ def main():
         action="store_true",
         help="Download synchronized lyrics as an '.lrc' sidecar file",
     )
+    download_parser.add_argument(
+        "-s",
+        "--skip",
+        action="store_true",
+        help="Skip download if the output file already exists",
+    )
+    download_parser.add_argument(
+        "-yt",
+        "--youtube",
+        action="store_true",
+        help="Use YouTube instead of YouTube Music",
+    )
 
     playlist_parser = subparsers.add_parser(
         "playlist",
         aliases=["p"],
         help="Download an entire playlist",
-        description="Download an entire playlist.",
-        formatter_class=argparse.RawTextHelpFormatter,
     )
     playlist_parser.add_argument(
         "playlist_id",
@@ -230,13 +193,17 @@ def main():
         action="store_true",
         help="Download synchronized lyrics as an '.lrc' sidecar file",
     )
+    playlist_parser.add_argument(
+        "-s",
+        "--skip",
+        action="store_true",
+        help="Skip download if the output file already exists",
+    )
 
     search_parser = subparsers.add_parser(
         "search",
         aliases=["s"],
         help="Search for songs on YouTube Music",
-        description="Search for songs on YouTube Music.",
-        formatter_class=argparse.RawTextHelpFormatter,
     )
     search_parser.add_argument(
         "query",
@@ -257,11 +224,23 @@ def main():
         help="Thumbnail size for chafa (e.g., 16, 24, 40)",
     )
 
-    _add_detailed_help(
-        parser,
-        download_parser,
-        playlist_parser,
-        search_parser,
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version=f"smytm {version('smytm')}",
+    )
+    parser.add_argument(
+        "-gc",
+        "--gen-config",
+        action="store_true",
+        help="Generate default config",
+    )
+    parser.add_argument(
+        "-sc",
+        "--show-config",
+        action="store_true",
+        help="Show current config",
     )
 
     argv = _normalize_leading_hyphen_id(sys.argv[1:])
@@ -274,6 +253,9 @@ def main():
     if args.show_config:
         config.show_config()
         return
+
+    if args.command is None:
+        parser.error("the following arguments are required: command")
 
     if args.command in ("download", "d"):
         from . import download

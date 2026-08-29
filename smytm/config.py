@@ -31,6 +31,7 @@ DEFAULT_CONFIG = {
     "artist_in_filename": True,
     "replaygain_always": True,
     "lyrics_always": False,
+    "skip_always": False,
     "thumbnail_size": "16",
     "nerd_font_icons": True,
 }
