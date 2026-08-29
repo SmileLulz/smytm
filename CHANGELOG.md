@@ -1,5 +1,9 @@
 # Changelogs
 
+### v1.3
+
+- Added Windows build support
+
 ### v1.3.b3
 
 - Made `yt-dlp` a python dependency rather than system's

@@ -127,14 +127,29 @@ smytm --help
 
 **Linux config example:**
 
-```sh
+```json
 {
-    "output_dir": "/home/smilelulz/Music",
+    "output_dir": "/home/<Username>/Music",
     "format": "opus",
     "audio_quality": "0",
     "artist_in_filename": true,
     "replaygain_always": false,
     "lyrics_always": true,
+    "thumbnail_size": "16",
+    "nerd_font_icons": true
+}
+```
+
+**WIndows config example:**
+
+```json
+{
+    "output_dir": "C:\\Users\\<Username>\\Music",
+    "format": "opus",
+    "audio_quality": "0",
+    "artist_in_filename": true,
+    "replaygain_always": true,
+    "lyrics_always": false,
     "thumbnail_size": "16",
     "nerd_font_icons": true
 }

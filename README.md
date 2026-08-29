@@ -4,6 +4,9 @@
   <p>
     <b>smytm</b> is a command-line utility for searching and downloading music and audio from YouTube and YouTube Music. It uses yt-dlp and other external command-line tools for searching, downloading, metadata processing, and terminal output.
   </p>
+  <h3>
+    <a href="https://github.com/SmileLulz/smytm/blob/main/WIKI.md">Wiki</a>  -  <a href="https://github.com/SmileLulz/smytm/blob/main/CHANGELOG.md">Changelogs</a>
+  </h2>
 </div>
 
 <br></br>
