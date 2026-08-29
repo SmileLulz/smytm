@@ -1,5 +1,5 @@
 Name:    smytm
-Version:        1.3.b1
+Version:        1.3.b2
 Release: 1%{?dist}
 Summary: CLI utility for searching and downloading music from YouTube and YouTube Music
 
@@ -22,7 +22,7 @@ Recommends: AtomicParsley
 Recommends: rsgain
 
 %generate_buildrequires
-%pyproject_buildrequires
+%pyproject_buildrequires -R
 
 %description
 smytm is a command-line utility for searching and downloading music and audio
@@ -56,7 +56,6 @@ appstreamcli validate \
 %{_metainfodir}/io.github.SmileLulz.smytm.metainfo.xml
 
 %changelog
-* Sat Aug 29 2026 SmileLulz - 1.3.b1-1
-- Made `replaygain_always` `true` by default
+* Sat Aug 29 2026 SmileLulz - 1.3.b2-1
+- Fixing Fedora spec
 - Testing Windows build
-- Did many changes for Windows build support
