@@ -3,136 +3,217 @@ $ErrorActionPreference = "Stop"
 $Repo = "SmileLulz/smytm"
 $ApiUrl = "https://api.github.com/repos/$Repo/releases/latest"
 
-function Write-Info([string]$Message) {
-    Write-Host $Message -ForegroundColor Cyan
+function Write-ErrorMessage {
+    param([string]$Message)
+
+    Write-Host "Error: $Message" -ForegroundColor Red
 }
 
-function Write-Success([string]$Message) {
+function Write-Success {
+    param([string]$Message)
+
     Write-Host $Message -ForegroundColor Green
 }
 
-function Write-WarningMessage([string]$Message) {
+function Write-WarningMessage {
+    param([string]$Message)
+
     Write-Host $Message -ForegroundColor Yellow
 }
 
-function Fail([string]$Message) {
-    Write-Host "Error: $Message" -ForegroundColor Red
-    exit 1
-}
+function Install-WingetPackage {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Id
+    )
 
-function Require-Command([string]$Command) {
-    if (-not (Get-Command $Command -ErrorAction SilentlyContinue)) {
-        Fail "Required command not found: $Command"
+    Write-Host "Checking $Id..."
+
+    winget list `
+        --id $Id `
+        -e `
+        --accept-source-agreements *> $null
+
+    if ($LASTEXITCODE -eq 0) {
+        Write-Success "Already installed: $Id"
+        return
     }
-}
 
-Write-Host "smytm installer" -ForegroundColor Cyan
-Write-Host ""
+    Write-Host "Installing $Id..."
 
-Require-Command "winget"
-Require-Command "py"
-
-Write-Info "Installing/updating required command-line tools with winget..."
-
-$WingetPackages = @(
-    "BtbN.FFmpeg.GPL",
-    "hpjansson.Chafa",
-    "wez.atomicparsley"
-)
-
-foreach ($Package in $WingetPackages) {
-    Write-Host "Installing $Package..."
-    winget install --id $Package --exact --source winget `
+    winget install `
+        --id $Id `
+        -e `
         --accept-source-agreements `
         --accept-package-agreements
 
     if ($LASTEXITCODE -ne 0) {
-        Fail "Failed to install $Package with winget."
+        throw "Failed to install $Id with winget."
     }
+
+    Write-Success "Installed: $Id"
 }
 
-Write-Success "✓ Required Windows tools installed."
-Write-Host ""
+Write-Host "smytm installer" -ForegroundColor Cyan
+Write-Host
 
-Write-Info "Updating pip..."
-py -m pip install --upgrade pip
-if ($LASTEXITCODE -ne 0) {
-    Fail "Failed to update pip."
+
+# Requirements
+
+if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-ErrorMessage "winget is required but was not found."
+    exit 1
 }
 
-Write-Info "Fetching latest smytm release..."
+if (-not (Get-Command py -ErrorAction SilentlyContinue)) {
+    Write-ErrorMessage "Python launcher 'py' is required but was not found."
+    Write-Host
+    Write-Host "Install Python from:"
+    Write-Host "https://www.python.org/downloads/windows/"
+    exit 1
+}
+
+
+# Install xternal dependencies
+
+Write-Host "Installing/checking required command-line tools with winget..."
+Write-Host
+
+Install-WingetPackage "BtbN.FFmpeg.GPL"
+Install-WingetPackage "hpjansson.Chafa"
+Install-WingetPackage "wez.atomicparsley"
+
+Write-Host
+
+
+# Fetch latest release
+
+Write-WarningMessage "Fetching latest smytm release information..."
 
 $Headers = @{
     "Accept" = "application/vnd.github+json"
     "X-GitHub-Api-Version" = "2026-03-10"
 }
 
-try {
-    $Release = Invoke-RestMethod -Uri $ApiUrl -Headers $Headers
-} catch {
-    Fail "Unable to fetch the latest GitHub release: $($_.Exception.Message)"
+$Release = Invoke-RestMethod `
+    -Uri $ApiUrl `
+    -Headers $Headers
+
+$ReleaseTag = $Release.tag_name
+$ReleaseName = $Release.name
+
+if ([string]::IsNullOrWhiteSpace($ReleaseTag)) {
+    throw "GitHub release did not contain a tag name."
 }
 
-$WheelAssets = @(
+Write-Host "Release: $ReleaseName"
+Write-Host "Tag:     $ReleaseTag"
+Write-Host
+
+
+# Find wheel
+
+$Wheels = @(
     $Release.assets | Where-Object {
-        $_.name -match '^smytm-.+-py3-none-any\.whl$'
+        $_.name -match '^smytm-.+\.whl$'
     }
 )
 
-if ($WheelAssets.Count -eq 0) {
-    Fail "No py3-none-any wheel was found in release $($Release.tag_name)."
+if ($Wheels.Count -eq 0) {
+    throw "No smytm wheel was found in the latest GitHub release."
 }
 
-if ($WheelAssets.Count -gt 1) {
-    Fail "Multiple matching wheels were found in release $($Release.tag_name)."
+if ($Wheels.Count -gt 1) {
+    $Names = ($Wheels | ForEach-Object { $_.name }) -join ", "
+    throw "Multiple smytm wheels were found: $Names"
 }
 
-$Wheel = $WheelAssets[0]
-$TempDir = Join-Path ([System.IO.Path]::GetTempPath()) ("smytm-" + [guid]::NewGuid().ToString())
-New-Item -ItemType Directory -Path $TempDir | Out-Null
+$Wheel = $Wheels[0]
+
+$AssetName = $Wheel.name
+$DownloadUrl = $Wheel.browser_download_url
+$Digest = $Wheel.digest
+
+Write-Host "Package: $AssetName"
+Write-Host
+
+if ([string]::IsNullOrWhiteSpace($Digest) -or
+    -not $Digest.StartsWith("sha256:")) {
+    throw "GitHub did not provide a SHA-256 digest for the selected wheel."
+}
+
+$ExpectedSha = $Digest.Substring(7)
+
+
+# Download and verify wheel
+
+$TempDir = Join-Path $env:TEMP ("smytm-" + [guid]::NewGuid().ToString())
+
+New-Item `
+    -ItemType Directory `
+    -Path $TempDir `
+    -Force `
+    | Out-Null
 
 try {
-    $WheelPath = Join-Path $TempDir $Wheel.name
+    $WheelPath = Join-Path $TempDir $AssetName
 
-    Write-Info "Downloading $($Wheel.name)..."
-    Invoke-WebRequest -Uri $Wheel.browser_download_url -OutFile $WheelPath
+    Write-WarningMessage "Downloading package..."
 
-    if (-not $Wheel.digest -or -not $Wheel.digest.StartsWith("sha256:")) {
-        Fail "GitHub did not provide a SHA-256 digest for the selected wheel."
+    Invoke-WebRequest `
+        -Uri $DownloadUrl `
+        -OutFile $WheelPath
+
+    $ActualSha = (
+        Get-FileHash `
+            -Path $WheelPath `
+            -Algorithm SHA256
+    ).Hash.ToLowerInvariant()
+
+    if ($ActualSha -ne $ExpectedSha.ToLowerInvariant()) {
+        Write-ErrorMessage "SHA-256 verification failed."
+        Write-Host "Expected: $ExpectedSha"
+        Write-Host "Actual:   $ActualSha"
+        exit 1
     }
 
-    $ExpectedHash = $Wheel.digest.Substring(7).ToLowerInvariant()
-    $ActualHash = (Get-FileHash -Algorithm SHA256 -Path $WheelPath).Hash.ToLowerInvariant()
+    Write-Success "SHA-256 verified."
+    Write-Host
 
-    if ($ActualHash -ne $ExpectedHash) {
-        Fail "SHA-256 verification failed.`nExpected: $ExpectedHash`nActual:   $ActualHash"
-    }
+    # Install wheel
 
-    Write-Success "✓ SHA-256 verified"
-    Write-Host ""
+    Write-WarningMessage "Installing smytm..."
 
-    Write-Info "Installing smytm from the verified wheel..."
-    py -m pip install $WheelPath
+    & py -3 -m pip install `
+        --upgrade `
+        $WheelPath
 
     if ($LASTEXITCODE -ne 0) {
-        Fail "Failed to install smytm."
+        throw "Failed to install smytm with pip."
     }
 
-    Write-Host ""
-    Write-Success "✓ smytm $($Release.tag_name) installed successfully."
-    Write-Host ""
-    Write-Host "Restart your terminal before using the newly installed commands."
-    Write-Host ""
-    Write-WarningMessage "rsgain is optional and is required only for ReplayGain 2.0 tagging."
-    Write-WarningMessage "    Install it manually from:"
-    Write-WarningMessage "    https://github.com/complexlogic/rsgain/releases"
-    Write-WarningMessage "    Extract rsgain.exe and add its directory to PATH."
-    Write-Host ""
+    Write-Host
+    Write-Success "smytm $ReleaseTag installed successfully."
+    Write-Host
+
     Write-Host "Run it with:"
     Write-Host "  smytm"
+
+    Write-Host
+    Write-WarningMessage "rsgain is not installed automatically."
+    Write-Host
+    Write-Host "rsgain is required for ReplayGain processing."
+    Write-Host "Install it separately and make sure rsgain.exe is available on PATH."
+    Write-Host
+    Write-Host "See:"
+    Write-Host "https://github.com/complexlogic/rsgain"
 }
 finally {
     if (Test-Path $TempDir) {
-        Remove-Item -Recurse -Force $TempDir
+        Remove-Item `
+            -Path $TempDir `
+            -Recurse `
+            -Force `
+            -ErrorAction SilentlyContinue
     }
 }

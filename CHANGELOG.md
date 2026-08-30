@@ -1,5 +1,9 @@
 # Changelogs
 
+### v1.9
+
+- Fixed `install-win.ps1`
+
 ### v1.8
 
 - Added direct playback using `pl, play`
