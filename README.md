@@ -20,8 +20,9 @@
 # ✨ Features
 
 - Search for songs in YouTube Music
-- Download songs / playlists / any audios from YouTube Music or YouTube
+- Download songs / playlists / any audio from YouTube Music or YouTube
 - Download synchronized lyrics as `.lrc` sidecar files
+- Play audio directly from YouTube without downloading
 - See [WIKI.md](https://github.com/SmileLulz/smytm/blob/main/WIKI.md) for more help.
 
 **See [CHANGELOG.md](https://github.com/SmileLulz/smytm/blob/main/CHANGELOG.md) for latest update information.**
@@ -100,35 +101,68 @@ bash install.sh
 
 ## Windows
 
-_Make sure you have installed **python 3.10** or higher._
+_Make sure you have installed **Python 3.10** or higher and [App Installer](https://apps.microsoft.com/detail/9NBLGGH4NNS1) / `winget`._
 
-Download the latest `.whl` file from the [Releases](https://github.com/SmileLulz/smytm/releases) page.
+1. Bypass the script execution policy:
 
-Update python pip and packages:
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+```
+
+2. Install:
+
+```powershell
+irm https://raw.githubusercontent.com/SmileLulz/smytm/main/install-win.ps1 | iex
+```
+
+- Or if you want to inspect the installation script first:
+
+```sh
+# Download the script
+Invoke-WebRequest `
+  -Uri "https://raw.githubusercontent.com/SmileLulz/smytm/main/install-win.ps1" `
+  -OutFile "install-win.ps1"
+
+# Inspect
+Get-Content .\install-win.ps1
+
+# Then install with the downloaded script
+.\install-win.ps1
+```
+
+The installer also installs the required command-line tools with `winget`, and reminds you how to install optional `rsgain`.
+
+**You can also install manually:**
+
+1. Download the latest `.whl` file from the [Releases](https://github.com/SmileLulz/smytm/releases) page.
+
+2. (Weekly/monthly) Update python pip:
 
 ```powershell
 py -m pip install --upgrade pip
 ```
 
-1. Install:
+3. Install:
 
 ```powershell
 py -m pip install .\path\to\smytm-x.x-py3-none-any.whl
 ```
 
-2. Install requirements:
+4. Install the requirements:
+
+_This installs `ffmpeg`, `chafa` and `AtomicParsley`._
+
+> `AtomicParsley` is optional, but required for `M4A`'s thumbnail embedding. If you don't want to install it, just remove it from the line (`  wez.atomicparsley`).
 
 ```sh
 winget install BtbN.FFmpeg.GPL hpjansson.Chafa wez.atomicparsley -e --accept-source-agreements --accept-package-agreements
 ```
 
-This installs `yt-dlp`, `ffmpeg`, `chafa` and `AtomicParsley`.
+5. Then just restart your terminal.
 
-`AtomicParsley` is optional, but required for `M4A`'s thumbnail embedding. If you don't want `AtomicParsley`, just remove it from the line (`  wez.atomicparsley`).
+6. (Optional) To install `rsgain`, you must do it manually:
 
-3. Then just restart your terminal to make sure the commands be available.
-
-4. To install `rsgain`, you must do it manually:
+> `rsgain` is optional, but required for ReplayGain (2.0) tagging.
 
 - Go to their official repository's [Release](https://github.com/complexlogic/rsgain/releases) page and download the windows zip file.
 - Extract it anywhere.
@@ -136,7 +170,6 @@ This installs `yt-dlp`, `ffmpeg`, `chafa` and `AtomicParsley`.
 - In the **System variables** section, select the `Path` or `PATH`, then click Edit.
 - Now click **New**, then **Browse**, then select the extracted `rsgain-x.x-win64` folder where the `rsgain.exe` is located.
 
-`rsgain` is optional, but required for ReplayGain (2.0) tagging.
 
 # 📦 Build by yourself
 

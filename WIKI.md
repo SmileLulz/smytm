@@ -104,6 +104,16 @@ Download lyrics as an `.lrc` sidecar file for each track:
 smytm playlist --lyrics PLj1lzMuovjRy-WbyMjqbeFA8QwjXstgLC
 ```
 
+### Direct playback
+
+> Plays the audio directly from YouTube Music / YouTube without downloading.
+
+Play directly:
+
+```sh
+smytm play lYBUbBu4W08
+```
+
 ### Other uses
 
 Generate the config file:

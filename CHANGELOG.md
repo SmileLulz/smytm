@@ -1,5 +1,10 @@
 # Changelogs
 
+### v1.8
+
+- Added direct playback using `pl, play`
+- Added `install-win.ps1` script for easy installation for Windows
+
 ### v1.7
 
 - Solved crash on invalid id

@@ -40,7 +40,7 @@ def _normalize_leading_hyphen_id(argv):
         command_index = next(
             i
             for i, token in enumerate(argv)
-            if token in {"download", "d", "playlist", "p"}
+            if token in {"download", "d", "playlist", "p", "play", "pl"}
         )
     except StopIteration:
         return argv
@@ -200,6 +200,16 @@ def main():
         help="Skip download if the output file already exists",
     )
 
+    play_parser = subparsers.add_parser(
+        "play",
+        aliases=["pl"],
+        help="Play audio directly from YouTube by video ID",
+    )
+    play_parser.add_argument(
+        "video_id",
+        help="11-character YouTube video ID",
+    )
+
     search_parser = subparsers.add_parser(
         "search",
         aliases=["s"],
@@ -271,6 +281,11 @@ def main():
         from . import playlist
 
         playlist.run(args)
+
+    elif args.command in ("play", "pl"):
+        from . import play
+
+        play.run(args)
 
 
 if __name__ == "__main__":
