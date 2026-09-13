@@ -26,7 +26,33 @@ DEFAULT_CONFIG = {
     "skip_always": False,
     "thumbnail_size": "16",
     "nerd_font_icons": True,
+    "cookies": {
+        "browser": "",
+        "profile_path": ""
+    }
 }
+
+
+def youtube_cookie_args(config_data=None):
+    """Build yt-dlp cookie arguments from the optional config section."""
+    if config_data is None:
+        config_data = load_config()
+
+    cookies = config_data.get("cookies", {})
+    if not isinstance(cookies, dict):
+        return []
+
+    browser = str(cookies.get("browser", "") or "").strip()
+    profile_path = str(cookies.get("profile_path", "") or "").strip()
+
+    if not browser:
+        return []
+
+    browser_source = browser
+    if profile_path:
+        browser_source = f"{browser}:{profile_path}"
+
+    return ["--cookies-from-browser", browser_source]
 
 
 def create_default_config():

@@ -11,6 +11,7 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+from . import config
 from . import icons
 from . import utils
 
@@ -176,6 +177,7 @@ def _get_ytdlp_metadata(video_id: str) -> dict[str, Any]:
         result = subprocess.run(
             [
                 ytdlp,
+                *config.youtube_cookie_args(),
                 "--skip-download",
                 "--no-playlist",
                 "--print",

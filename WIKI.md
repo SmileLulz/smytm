@@ -160,17 +160,20 @@ smytm search --help
 - Linux: `$XDG_CONFIG_HOME/smytm/config.json`, or `~/.config/smytm/config.json` when `XDG_CONFIG_HOME` is not set
 - Windows: `%APPDATA%\\smytm\\config.json`
 
-| Key                  | Default   | Description                                                                 |
-| -------------------  | --------- | --------------------------------------------------------------------------- |
-| `output_dir`         | `~/Music` | Where downloaded files are saved                                            |
-| `format`             | `"opus"`  | Default audio format (can be overridden with `-f`/`--format`)               |
-| `audio_quality`      | `"0"`     | yt-dlp audio quality (`0` = best, `9` = worst)                              |
-| `artist_in_filename` | `true`    | Includes ` - Artist Name` in the end of the filename                        |
-| `replaygain_always`  | `true`    | Always apply ReplayGain tags, without needing `-rg`/`--replaygain`          |
-| `lyrics_always`      | `false`   | Always download synchronized `.lrc` files, without needing `-ly`/`--lyrics` |
-| `skip_always`        | `false`   | Always skip downloads when the output filename already exists               |
-| `thumbnail_size`     | `"16"`    | Default thumbnail preview size (can be overridden with `-ts`/`--tsize`)     |
-| `nerd_font_icons`    | `true`    | Show Nerd Font icons in output; set `false` for plain text                  |
+| Key                    | Default   | Description                                                                 |
+| ---------------------- | --------- | --------------------------------------------------------------------------- |
+| `output_dir`           | `~/Music` | Where downloaded files are saved                                            |
+| `format`               | `"opus"`  | Default audio format (can be overridden with `-f`/`--format`)               |
+| `audio_quality`        | `"0"`     | yt-dlp audio quality (`0` = best, `9` = worst)                              |
+| `artist_in_filename`   | `true`    | Includes ` - Artist Name` in the end of the filename                        |
+| `replaygain_always`    | `true`    | Always apply ReplayGain tags, without needing `-rg`/`--replaygain`          |
+| `lyrics_always`        | `false`   | Always download synchronized `.lrc` files, without needing `-ly`/`--lyrics` |
+| `skip_always`          | `false`   | Always skip downloads when the output filename already exists               |
+| `thumbnail_size`       | `"16"`    | Default thumbnail preview size (can be overridden with `-ts`/`--tsize`)     |
+| `nerd_font_icons`      | `true`    | Show Nerd Font icons in output; set `false` for plain text                  |
+| `cookies/browser`      | empty     | Browser to get cookies from (i.e. `firefox`)                                |
+| `cookies/profile_path` | empty     | Browser profile folder path                                                 |
+| `icons`                | `...`     | Nerd font icons configuration                                               |
 
 **Linux config example:**
 
@@ -184,7 +187,25 @@ smytm search --help
     "lyrics_always": true,
     "skip_always": false,
     "thumbnail_size": "16",
-    "nerd_font_icons": true
+    "nerd_font_icons": true,
+    "cookies": {
+        "browser": "",
+        "profile_path": ""
+    },
+    "icons": {
+        "download": "  ",
+        "video": "  ",
+        "format": "  ",
+        "output": "󰉍  ",
+        "music": "󰝚  ",
+        "fallback": "  ",
+        "success": "  ",
+        "error": "  ",
+        "title": "󰝚  ",
+        "artist": "󰀄  ",
+        "warning": "  ",
+        "replaygain": "󰕾  "
+    }
 }
 ```
 
@@ -200,6 +221,24 @@ smytm search --help
     "lyrics_always": false,
     "skip_always": false,
     "thumbnail_size": "16",
-    "nerd_font_icons": true
+    "nerd_font_icons": true,
+    "cookies": {
+        "browser": "",
+        "profile_path": ""
+    },
+    "icons": {
+        "download": "  ",
+        "video": "  ",
+        "format": "  ",
+        "output": "󰉍  ",
+        "music": "󰝚  ",
+        "fallback": "  ",
+        "success": "  ",
+        "error": "  ",
+        "title": "󰝚  ",
+        "artist": "󰀄  ",
+        "warning": "  ",
+        "replaygain": "󰕾  "
+    }
 }
 ```

@@ -32,6 +32,7 @@ def download_single(
     audio_quality,
     include_artist=True,
     skip_existing=False,
+    cookie_args=None,
 ):
     """Download audio from a given URL.
 
@@ -50,6 +51,7 @@ def download_single(
 
     info_cmd = [
         ytdlp,
+        *(cookie_args or []),
         "--print", "%(title)s\t%(artist)s\t%(uploader)s",
         "--no-playlist",
         "--",
@@ -85,6 +87,7 @@ def download_single(
 
     cmd = [
         ytdlp,
+        *(cookie_args or []),
         "--no-playlist",
         "--extract-audio",
         "--audio-format", audio_format,
@@ -114,6 +117,7 @@ def download_by_id(
     include_artist=True,
     skip_existing=False,
     force_youtube=False,
+    cookie_args=None,
 ):
     """Download a single video ID.
 
@@ -134,9 +138,9 @@ def download_by_id(
             output_dir,
             audio_format,
             audio_quality,
-            video_id,
             include_artist,
             skip_existing,
+            cookie_args,
         )
 
     print(f"{icons.icon('music')} Trying YouTube Music...")
@@ -147,6 +151,7 @@ def download_by_id(
         audio_quality,
         include_artist,
         skip_existing,
+        cookie_args,
     )
 
     if success:
@@ -163,6 +168,7 @@ def download_by_id(
         audio_quality,
         include_artist,
         skip_existing,
+        cookie_args,
     )
 
 
@@ -200,6 +206,8 @@ def run(args):
     print(f"{icons.icon('output')} Output   : {output_dir}")
     print()
 
+    cookie_args = config.youtube_cookie_args(cfg)
+
     success, output_path, skipped = download_by_id(
         args.video_id,
         output_dir,
@@ -208,6 +216,7 @@ def run(args):
         include_artist,
         skip_existing,
         args.youtube,
+        cookie_args,
     )
 
     if success:

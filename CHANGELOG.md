@@ -1,5 +1,9 @@
 # Changelogs
 
+### v2.0
+
+- Added cookies' configuration, in-case the download fails because of YouTube's anti-bot/rate-limit behavior
+
 ### v1.9
 
 - Fixed `install-win.ps1`

@@ -28,6 +28,7 @@ def get_playlist_entries(playlist_id):
 
     cmd = [
         ytdlp,
+        *config.youtube_cookie_args(),
         "--flat-playlist",
         "--print", "%(id)s\t%(title)s",
         "--no-warnings",
@@ -81,6 +82,7 @@ def run(args):
     download_lyrics = args.lyrics or cfg.get("lyrics_always", False)
     skip_existing = args.skip or cfg.get("skip_always", False)
     include_artist = bool(cfg.get("artist_in_filename", True))
+    cookie_args = config.youtube_cookie_args(cfg)
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -125,6 +127,8 @@ def run(args):
                 audio_quality,
                 include_artist,
                 skip_existing,
+                False,
+                cookie_args,
             )
 
             if success:

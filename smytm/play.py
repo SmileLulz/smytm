@@ -3,13 +3,14 @@
 import subprocess
 import sys
 
+from . import config
 from . import icons
 from . import utils
 
 SUBPROCESS_TIMEOUT = 300
 
 
-def _stream_url(url):
+def _stream_url(url, cookie_args=None):
     """Stream one URL through yt-dlp into ffplay.
 
     Returns True when playback completes successfully, otherwise False.
@@ -28,6 +29,7 @@ def _stream_url(url):
 
     ytdlp_cmd = [
         ytdlp,
+        *(cookie_args or []),
         "--no-playlist",
         "--no-warnings",
         "-f",
@@ -88,7 +90,7 @@ def _stream_url(url):
                     process.kill()
 
 
-def play_by_id(video_id):
+def play_by_id(video_id, cookie_args=None):
     """Play a video ID, preferring YouTube Music and falling back to YouTube."""
     if not utils.validate_video_id(video_id):
         print(f"{icons.icon('error')}Invalid video ID: {video_id}", file=sys.stderr)
@@ -98,14 +100,14 @@ def play_by_id(video_id):
     youtube_url = f"https://www.youtube.com/watch?v={video_id}"
 
     print(f"{icons.icon('music')} Trying YouTube Music...")
-    if _stream_url(music_url):
+    if _stream_url(music_url, cookie_args):
         return True
 
     print(
         f"\n{icons.icon('fallback')} YouTube Music failed, "
         "falling back to YouTube..."
     )
-    return _stream_url(youtube_url)
+    return _stream_url(youtube_url, cookie_args)
 
 
 def run(args):
@@ -115,6 +117,8 @@ def run(args):
     print(f"{icons.icon('video')} Video ID : {args.video_id}")
     print()
 
-    if not play_by_id(args.video_id):
+    cookie_args = config.youtube_cookie_args()
+
+    if not play_by_id(args.video_id, cookie_args):
         print(f"\n{icons.icon('error')} Playback failed!", file=sys.stderr)
         sys.exit(1)
