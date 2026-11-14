@@ -1,3 +1,6 @@
+> [!WARNING]
+> Project shifted to Go/Golang. This (python) branch is no longer maintained, and is abandoned. Go to main branch instead.
+
 <div align="center">
   <h1>🎵 smytm 🎵</h1>
   <h3>CLI utility for searching and downloading music or audio from YouTube and YouTube Music.</h3>
@@ -5,17 +8,18 @@
     <b>smytm</b> is a command-line utility for searching and downloading music and audio from YouTube and YouTube Music. It uses yt-dlp and other external command-line tools for searching, downloading, metadata processing, and terminal output.
   </p>
   <h3>
-    <a href="https://github.com/SmileLulz/smytm/blob/main/WIKI.md">Wiki</a>  -  <a href="https://github.com/SmileLulz/smytm/blob/main/CHANGELOG.md">Changelogs</a>
+    <a href="https://github.com/SmileLulz/smytm/blob/python/WIKI.md">Wiki</a>  -  <a href="https://github.com/SmileLulz/smytm/blob/python/CHANGELOG.md">Changelogs</a>
   </h2>
 </div>
 
-<br></br>
+<br>
 
 > [!NOTE]
 > This project was meant to be a personal project, but thought it would be nice to share it with others.
 > 
 > So, I am not accepting contributions. Thank you. Hope you like this small utility :)
 
+<br>
 
 # ✨ Features
 
@@ -23,9 +27,9 @@
 - Download songs / playlists / any audio from YouTube Music or YouTube
 - Download synchronized lyrics as `.lrc` sidecar files
 - Play audio directly from YouTube without downloading
-- See [WIKI.md](https://github.com/SmileLulz/smytm/blob/main/WIKI.md) for more help.
+- See [WIKI.md](https://github.com/SmileLulz/smytm/blob/python/WIKI.md) for more help.
 
-**See [CHANGELOG.md](https://github.com/SmileLulz/smytm/blob/main/CHANGELOG.md) for latest update information.**
+**See [CHANGELOG.md](https://github.com/SmileLulz/smytm/blob/python/CHANGELOG.md) for latest update information.**
 
 
 # 🔗 Dependencies
@@ -46,7 +50,7 @@ Optional:
 - [`AtomicParsley`](https://github.com/wez/atomicparsley) — M4A thumbnail embedding
 - [`rsgain`](https://github.com/complexlogic/rsgain) — ReplayGain 2.0 tagging
 
-**See [DEPENDENCIES.md](https://github.com/SmileLulz/smytm/blob/main/DEPENDENCIES.md) for additional platform notes.**
+**See [DEPENDENCIES.md](https://github.com/SmileLulz/smytm/blob/python/DEPENDENCIES.md) for additional platform notes.**
 
 # 📥 Install
 
@@ -83,14 +87,14 @@ Fedora: `ffmpeg`, `chafa`, `AtomicParsley` (optional), `rsgain` (optional)
 Install:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/SmileLulz/smytm/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/SmileLulz/smytm/python/install.sh | bash
 ```
 
 Or if you want to inspect the installation script first:
 
 ```sh
 # Download the script
-curl -fsSL https://raw.githubusercontent.com/SmileLulz/smytm/main/install.sh -o install.sh
+curl -fsSL https://raw.githubusercontent.com/SmileLulz/smytm/python/install.sh -o install.sh
 
 # Inspect
 less install.sh
@@ -112,7 +116,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 2. Install:
 
 ```powershell
-irm https://raw.githubusercontent.com/SmileLulz/smytm/main/install-win.ps1 | iex
+irm https://raw.githubusercontent.com/SmileLulz/smytm/python/install-win.ps1 | iex
 ```
 
 - Or if you want to inspect the installation script first:
@@ -120,7 +124,7 @@ irm https://raw.githubusercontent.com/SmileLulz/smytm/main/install-win.ps1 | iex
 ```sh
 # Download the script
 Invoke-WebRequest `
-  -Uri "https://raw.githubusercontent.com/SmileLulz/smytm/main/install-win.ps1" `
+  -Uri "https://raw.githubusercontent.com/SmileLulz/smytm/python/install-win.ps1" `
   -OutFile "install-win.ps1"
 
 # Inspect
@@ -289,10 +293,10 @@ Install:
 sudo dnf install rpm/RPMS/noarch/smytm-x.x-1.fcxx.noarch.rpm
 ```
 
-See [WIKI.md](https://github.com/SmileLulz/smytm/blob/main/WIKI.md) for usage and configuration details.
+See [WIKI.md](https://github.com/SmileLulz/smytm/blob/python/WIKI.md) for usage and configuration details.
 
 # 🧾 License
 
 This project is licensed under the GNU General Public License v3.0 only.
 
-Also see [DEPENDENCIES.md](https://github.com/SmileLulz/smytm/blob/main/DEPENDENCIES.md).
+Also see [DEPENDENCIES.md](https://github.com/SmileLulz/smytm/blob/python/DEPENDENCIES.md).
