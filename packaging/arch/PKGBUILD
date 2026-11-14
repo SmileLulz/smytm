@@ -1,0 +1,62 @@
+# Maintainer: SmileLulz <SmileLulz@users.noreply.github.com>
+# Local PKGBUILD: builds from the current project working tree.
+
+_pkgbuild_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+_project_root="$(realpath "$_pkgbuild_dir/../..")"
+
+pkgname=smytm
+pkgver="$(tr -d '[:space:]' < "$_project_root/VERSION" 2>/dev/null || true)"
+pkgrel=1
+
+pkgdesc="CLI for searching and downloading music from YouTube Music"
+url="https://github.com/SmileLulz/smytm"
+arch=('x86_64' 'aarch64' 'armv7h' 'riscv64')
+options=(!lto !debug)
+license=('GPL-3.0-only')
+depends=('ffmpeg')
+makedepends=('go' 'git')
+optdepends=('rsgain: ReplayGain 2.0 tagging')
+
+source=()
+sha256sums=()
+
+prepare() {
+    local build_root="$srcdir/$pkgname"
+    local item
+
+    if [[ ! -f "$_project_root/go.mod" ]]; then
+        printf 'Error: go.mod not found in %s\n' "$_project_root" >&2
+        return 1
+    fi
+
+    rm -rf -- "$build_root"
+    mkdir -p "$build_root"
+
+    for item in VERSION go.mod go.sum src README.md LICENSE; do
+        if [[ -e "$_project_root/$item" ]]; then
+            cp -a "$_project_root/$item" "$build_root/"
+        fi
+    done
+
+    cd "$build_root"
+    export GOTOOLCHAIN=local
+    [[ -f go.sum ]] || go mod tidy
+    go mod download
+}
+
+build() {
+    cd "$srcdir/$pkgname"
+    export GOTOOLCHAIN=local
+    export CGO_ENABLED=0
+
+    go build -trimpath -buildvcs=false \
+        -ldflags "-s -w -X main.version=$pkgver" \
+        -o smytm ./src
+}
+
+package() {
+    cd "$srcdir/$pkgname"
+    install -Dm755 smytm "$pkgdir/usr/bin/smytm"
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+}

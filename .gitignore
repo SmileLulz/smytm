@@ -1,0 +1,43 @@
+# Custom
+dist/
+/smytm
+/smytm.*
+
+# Go (unchanged from gitlulz-local)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.*
+*.coverprofile
+profile.cov
+go.work
+go.work.sum
+.env
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+nohup.out
+
+# ArchLinuxPackages
+*.tar
+*.tar.*
+*.jar
+*.msi
+*.deb
+*.zip
+*.tgz
+*.log
+*.log.*
+*.sig
+
+pkg/
+src/
+!/src/
