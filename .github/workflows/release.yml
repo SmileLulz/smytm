@@ -85,7 +85,7 @@ jobs:
         run: |
           mkdir -p dist
           # Pinned to a specific version
-          go run github.com/goreleaser/nfpm/v2/cmd/nfpm@v2.49.0 pkg \
+          go run github.com/goreleaser/nfpm/v2/cmd/nfpm@v2.47.0 pkg \
             --packager deb \
             --config packaging/nfpm.yaml \
             --target dist/
@@ -124,7 +124,7 @@ jobs:
         run: |
           mkdir -p dist
           # Pinned to a specific version
-          go run github.com/goreleaser/nfpm/v2/cmd/nfpm@v2.49.0 pkg \
+          go run github.com/goreleaser/nfpm/v2/cmd/nfpm@v2.47.0 pkg \
             --packager rpm \
             --config packaging/nfpm.yaml \
             --target dist/
@@ -179,6 +179,7 @@ jobs:
             menci/archlinuxarm:base-devel \
             bash -c '
               set -e
+              sed -i "s/^#DisableSandbox/DisableSandbox/" /etc/pacman.conf
               pacman -Syu --noconfirm --needed
               pacman -S --noconfirm --needed go git ffmpeg sudo
               useradd -m builder || true
