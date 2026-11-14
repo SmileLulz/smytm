@@ -8,7 +8,7 @@
 > [!IMPORTANT]
 > This started as a Python project. That one worked, but it dragged in a whole pile of things to install and keep working. I rewrote it in Go so it's just one binary you drop on your `PATH` (or install for your Linux distro) and forget about. Same features, fewer moving parts.
 >
-> Like my other little tools, I build this for my own use, and I am not taking PRs for now. Fork it if you want to change something.
+> Like my other little tools, I build this for my own use, and I am not taking PRs for now. Fork it if you want to change something. _(The project is under [GNU General Public License v3.0 only](https://github.com/SmileLulz/gitlulz/blob/main/LICENSE) license)._
 
 <br>
 
@@ -33,22 +33,22 @@ Grab the right file from the [releases page](https://github.com/SmileLulz/smytm/
 
 ```bash
 # Linux example
-chmod +x smytm-linux-amd64
-sudo mv smytm-linux-amd64 /usr/local/bin/smytm
+chmod +x smytm-*-linux-amd64
+sudo mv smytm-*-linux-amd64 /usr/local/bin/smytm
 
 # macOS example (Apple Silicon)
-chmod +x smytm-darwin-arm64
-sudo mv smytm-darwin-arm64 /usr/local/bin/smytm
+chmod +x smytm-*-darwin-arm64
+sudo mv smytm-*-darwin-arm64 /usr/local/bin/smytm
 
 # Termux example (Android)
-chmod +x smytm-android-arm64
-mv smytm-android-arm64 $PREFIX/bin/smytm
+chmod +x smytm-*-android-arm64
+mv smytm-*-android-arm64 $PREFIX/bin/smytm
 ```
 
 ```powershell
 # Windows example (PowerShell)
 # Move it to a folder that is in your PATH, e.g., C:\Users\YourName\bin
-Move-Item .\smytm-windows-amd64.exe C:\Users\YourName\bin\smytm.exe
+Move-Item .\smytm-*-windows-amd64.exe C:\Users\YourName\bin\smytm.exe
 ```
 
 ### Arch Linux
@@ -71,7 +71,7 @@ sudo pacman -U dist/smytm-*.pkg.tar.zst
 git clone https://github.com/SmileLulz/smytm
 cd smytm
 ./build.sh deb
-sudo dpkg -i dist/smytm_*_amd64.deb
+sudo dpkg -i dist/smytm_*.deb
 
 # Or grab the '.deb' from releases
 # and install it with 'dpkg -i'
@@ -100,8 +100,8 @@ cd smytm
 bash build.sh go
 
 # Or grab the prebuilt binary from releases and install it
-chmod +x smytm-android-arm64
-mv smytm-android-arm64 $PREFIX/bin/smytm
+chmod +x smytm-*-android-arm64
+mv smytm-*-android-arm64 $PREFIX/bin/smytm
 ```
 
 Want `smytm play` to work too? You also need `ffplay`, which lives in Termux's x11 repo:
