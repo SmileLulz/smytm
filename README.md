@@ -8,7 +8,7 @@
 > [!IMPORTANT]
 > This started as a Python project. That one worked, but it dragged in a whole pile of things to install and keep working. I rewrote it in Go so it's just one binary you drop on your `PATH` (or install for your Linux distro) and forget about. Same features, fewer moving parts.
 >
-> Like my other little tools, I build this for my own use, and I am not taking PRs for now. Fork it if you want to change something. _(The project is under [GNU General Public License v3.0 only](https://github.com/SmileLulz/gitlulz/blob/main/LICENSE) license)._
+> Like my other little tools, I build this for my own use, and I am not taking PRs for now. Fork it if you want to change something. _(The project is under [GNU General Public License v3.0 only](https://github.com/SmileLulz/smytm/blob/main/LICENSE) license)._
 
 <br>
 
